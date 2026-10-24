@@ -1,33 +1,52 @@
 # Systemd Service Manager
 
-An aaPanel plugin for managing systemd services on Linux servers through the aaPanel interface.
+An intuitive aaPanel plugin for managing `systemd` services on Linux servers directly through a sleek web interface.
 
-[Tiếng Việt](README_VI.md)
+[English](README.md) | [Tiếng Việt](README_VI.md)
 
-## Features
+---
 
-- List services and view running, stopped, failed, and boot auto-start states.
-- Search and filter services by status, or view custom services separately.
-- Start, stop, and restart services; enable or disable them at boot.
-- View service status, PID, memory usage, and recent journal log lines.
-- Create custom services with a quick form or by entering a complete systemd unit file.
-- View and edit unit files, with an option to restart the service after saving.
-- Delete custom services and reload the systemd configuration.
+## 📸 Screenshots
 
-> Logs are loaded when the log window is opened or refreshed; continuous live streaming is not currently provided.
+### 1. Custom Services Management
+Manage all your custom application services in one place with complete operational controls: Start, Stop, Restart, View Logs, Edit configuration, and Delete.
 
-## Requirements
+![Custom Services Management](screenshots/custom_services.png)
 
-- A Linux server running `systemd` (`systemctl`).
-- aaPanel installed.
-- aaPanel running with administrative/root privileges to manage services and files under `/etc/systemd/system/`.
-- `journalctl` for viewing logs.
+### 2. All System Services Overview
+Monitor more than 200+ Linux system services (Docker, Cron, Nginx, SSHD, etc.), with status badges, instant search, and a handy **Daemon Reload** button.
 
-This is an aaPanel plugin, not a standalone application, and it is not intended for Windows.
+![All System Services Overview](screenshots/all_system_services.png)
 
-## Installation
+---
 
-### Option 1: Clone the repository
+## 🌟 Features
+
+- **Intuitive Service Overview:** Real-time visibility into service status (Running, Stopped, Exited, Failed) and boot persistence (Enabled / Disabled at boot).
+- **Smart Separation:** Clear separation between user-created **Custom Services** and internal **All System Services** to prevent accidental modifications to critical infrastructure.
+- **One-Click Controls:** Start, Stop, Restart, Reload, Enable, and Disable services instantly.
+- **Dual Creation Modes:**
+  - **Quick Form:** Fast, guided setup for standard applications (Node.js, Python, Go, Java, bash scripts, etc.).
+  - **Raw Unit File:** Full freedom to compose complete `.service` unit files with advanced systemd directives.
+- **Log Inspection & Process Metrics:** View service PID, memory footprint, and recent journal log output fetched directly via `journalctl`.
+- **Safety First:** Automatic `.bak` backups before modifying unit files, and automatic `systemctl daemon-reload` execution after changes.
+
+---
+
+## 📋 Requirements
+
+- A Linux server running `systemd` (with `systemctl` available).
+- **aaPanel** installed.
+- Administrative / `root` permissions for aaPanel to manage files under `/etc/systemd/system/`.
+- `journalctl` utility for reading system service logs.
+
+---
+
+## 🚀 Installation
+
+### Option 1: Clone from GitHub (Recommended)
+
+Connect to your server via SSH and run:
 
 ```bash
 sudo git clone https://github.com/huynhngoanhthai/Systemd-Service-Manager-1.0.git \
@@ -40,9 +59,11 @@ Run the installation script:
 sudo bash /www/server/panel/plugin/service_manager/install.sh install
 ```
 
-### Option 2: Quick installation from a ZIP archive
+---
 
-Connect to the aaPanel server over SSH, then run the following block with an account that has `sudo` privileges. It downloads the latest source from the `main` branch, copies the plugin files into the correct directory, and runs the installation script:
+### Option 2: One-liner ZIP Installation (No Git required)
+
+Execute the following snippet in your terminal to automatically download the latest archive from the `main` branch and install it:
 
 ```bash
 sudo bash -c '
@@ -57,24 +78,92 @@ bash /www/server/panel/plugin/service_manager/install.sh install
 '
 ```
 
-The server needs `wget` and `unzip`. The current `install.sh` only ensures that the plugin directory exists; the command above copies the source files there before running it. After installation, reload aaPanel and open the plugin if your aaPanel version/setup supports loading plugins from this directory.
+*Note: Ensure `wget` and `unzip` are installed on your server (`yum install -y wget unzip` or `apt install -y wget unzip`). After installation, refresh your aaPanel browser tab (`F5`) to access the plugin in the **App Store**.*
 
-The Python source syntax has been checked. The installation script is invoked with `bash`, so it does not need a separate executable permission.
+---
 
-## Usage
+## 📖 Detailed Usage Guide
 
-1. Open **Systemd Service Manager** in aaPanel.
-2. Choose **Custom Services** or **All System Services**; use search and filters to find a service.
-3. Use the actions beside a service to control it or view its logs.
-4. Select **Add New Service** to create one. The quick form requires a service name and an `ExecStart` command; user, working directory, restart settings, and environment variables can also be configured.
-5. Select **Raw Unit File** to enter a complete systemd unit file instead.
+### 1. Managing Services
 
-### Safety notes
+- **Search:** Enter the service name into the search box in the top-right corner and click **Search** (or press Enter).
+- **Filter by Status:** Use the **All Statuses** dropdown to filter services by status (`Running`, `Stopped`, etc.).
+- **Quick Actions:**
+  - Click **Start** / **Stop** / **Restart** to control the process lifecycle.
+  - Click **Logs** to inspect the latest log entries when troubleshooting.
+  - Click **Edit** to modify the `.service` configuration file.
+  - Click **Daemon Reload** in the top toolbar whenever manual unit changes are made in the system.
 
-- Service changes can interrupt applications or the server. Review unit files and commands before saving or restarting.
-- Deleting a custom service stops it, disables boot auto-start, and removes its unit file from `/etc/systemd/system/` (including its `.bak` backup, if present). This cannot be undone from the plugin.
-- The plugin runs system commands with the aaPanel process's privileges. Only install and use it on servers you administer.
+---
 
-## License
+### 2. Creating a New Service
 
-[MIT License](LICENSE)
+Click the green **+ Add New Service** button at the top left:
+
+#### Mode 1: Quick Form
+Ideal for standard background workers, APIs, and web services (Node.js, Python, Golang, scripts).
+
+![Create Service - Quick Form](screenshots/add_service_quick_form.png)
+
+1. **Service Name:** Enter your service name (e.g., `my-web-app`). The plugin will automatically append `.service` if omitted.
+2. **Exec Command:** Full command to execute your application (e.g., `/usr/bin/node /www/wwwroot/my-app/app.js` or `/usr/bin/python3 /www/wwwroot/api/main.py`).
+3. **Working Directory:** Root directory of your application (e.g., `/www/wwwroot/my-app`).
+4. **User / Restart:** Execution user (default: `root`) and restart policy (recommended: `Restart: Always` to automatically recover from crashes).
+5. **Environment Vars:** Key-value pairs (`KEY=VALUE`) separated by spaces or newlines, e.g., `PORT=3000 NODE_ENV=production`.
+6. Check **Enable at Boot** to auto-start on server reboot and **Start immediately after creation** to run right away.
+7. Click **Create Service**.
+
+---
+
+#### Mode 2: Raw Unit File
+Designed for advanced configurations requiring specific systemd targets, directives, or dependencies (`Type=forking`, `After=network.target mysql.service`, `LimitNOFILE`, etc.).
+
+![Create Service - Raw Unit](screenshots/add_service_raw_unit.png)
+
+1. Specify the service name in the **Service Name** field.
+2. Type or paste your complete systemd unit file into the code editor.
+3. Choose whether to enable at boot and start immediately.
+4. Click **Create Service**.
+
+---
+
+## 🗑️ Uninstallation Guide
+
+If you no longer need the **Systemd Service Manager** plugin, you can easily remove it using either method below:
+
+### Method 1: Via aaPanel Web Interface
+1. Open **aaPanel**.
+2. Navigate to **App Store** -> click on the **Installed** tab.
+3. Locate **Systemd Service Manager**.
+4. Click **Uninstall** and confirm.
+
+---
+
+### Method 2: Via Terminal / SSH Command
+Connect to your server via SSH and execute the uninstallation command:
+
+```bash
+sudo bash /www/server/panel/plugin/service_manager/install.sh uninstall
+```
+
+Or delete the plugin folder directly:
+
+```bash
+sudo rm -rf /www/server/panel/plugin/service_manager
+```
+
+> **Important Safety Note on Uninstallation:**  
+> Uninstalling the plugin removes only the aaPanel web management interface. All custom systemd services previously created in `/etc/systemd/system/` **will continue to run normally** in Linux without downtime or data loss, unless you explicitly deleted them inside the plugin prior to uninstallation.
+
+---
+
+## ⚠️ Safety Notes
+
+- Restarting or stopping essential system services (e.g., `network`, `sshd`, `mysql`, `nginx`) can disrupt active connections or server availability. Exercise caution when performing actions on system-critical units.
+- Clicking **Delete** on a Custom Service immediately stops the service, disables boot auto-start, and permanently removes its unit file from `/etc/systemd/system/`. This action cannot be reversed from the plugin.
+
+---
+
+## 📄 License
+
+Distributed under the [MIT License](LICENSE).

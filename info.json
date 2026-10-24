@@ -4,11 +4,11 @@
 	"name": "service_manager",
 	"type": "plugin",
 	"ps": "Visual Systemd Service (systemctl) Manager: Add, Delete, Edit service unit files, Start/Stop/Restart, Enable/Disable boot auto-start, and View real-time journal logs.",
-	"versions": "1.0",
+	"versions": "1.0.0",
 	"shell": "service_manager.sh",
 	"checks": "/www/server/panel/plugin/service_manager",
 	"author": "aaPanel Community",
-	"home": "https://www.aapanel.com",
+	"home": "https://github.com/huynhngoanhthai/Systemd-Service-Manager-1.0",
 	"date": "2026-10-24",
 	"default": false,
 	"display": 0

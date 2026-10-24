@@ -9,17 +9,23 @@ plugin_path="/www/server/panel/plugin/${plugin_name}"
 Install_plugin()
 {
 	mkdir -p "${plugin_path}"
+	chmod +x "${plugin_path}"/*.sh 2>/dev/null || true
 	echo 'The installation is complete' > $install_tmp
+	echo 'Successify'
 }
 
 Uninstall_plugin()
 {
 	rm -rf "${plugin_path}"
+	echo 'The uninstall is complete' > $install_tmp
+	echo 'Successify'
 }
 
 action=$1
 if [ "${1}" == 'install' ];then
 	Install_plugin
+elif [ "${1}" == 'uninstall' ];then
+	Uninstall_plugin
 else
 	Uninstall_plugin
 fi
