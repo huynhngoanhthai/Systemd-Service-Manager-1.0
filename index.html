@@ -346,10 +346,16 @@
 
         api: function(action_name, params, callback) {
             var loadIdx = layer.load(2, { time: 8000 });
+            var postData = $.extend({}, params || {});
+            // Critical: If postData contains 'action', rename to 'act' so it doesn't overwrite aaPanel's 'action=a'
+            if (postData.action !== undefined && postData.act === undefined) {
+                postData.act = postData.action;
+                delete postData.action;
+            }
             $.ajax({
                 type: 'POST',
                 url: '/plugin?action=a&name=service_manager&s=' + action_name,
-                data: params,
+                data: postData,
                 dataType: 'json',
                 success: function(res) {
                     layer.close(loadIdx);
@@ -524,7 +530,7 @@
 
         doAction: function(serviceName, action) {
             var self = this;
-            self.api('service_action', { service_name: serviceName, action: action }, function(res) {
+            self.api('service_action', { service_name: serviceName, act: action }, function(res) {
                 if (res.status) {
                     layer.msg(res.msg, { icon: 1, time: 1000 });
                     setTimeout(function() { self.load(); }, 600);

@@ -253,7 +253,8 @@ class service_manager_main:
         Execute actions: start, stop, restart, reload, enable, disable, mask, unmask, reset-failed
         """
         name = self._ensure_service_suffix(getattr(get, 'service_name', ''))
-        action = getattr(get, 'action', '').strip().lower()
+        # Use 'act' first to avoid overriding aaPanel's reserved query parameter 'action=a'
+        action = str(getattr(get, 'act', getattr(get, 'action', ''))).strip().lower()
 
         if not name:
             return public.returnMsg(False, 'Invalid service name!')
