@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Systemd Service Manager - aaPanel Extension</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              500: '#20a53a', // aaPanel Green
+              600: '#1b8a30',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    .glass-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body class="bg-[#0b0f19] text-slate-200 font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-[#0f172a]/95 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-brand-500/20 text-white font-mono font-bold text-lg">
+          ⚙️
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="font-bold text-lg text-white">Systemd Service Manager</span>
+            <span class="px-2 py-0.5 text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full">v1.0</span>
+          </div>
+          <p class="text-xs text-slate-400" data-i18n="appSubtitle">aaPanel Extension Plugin</p>
+        </div>
+      </div>
+      
+      <!-- Nav & Lang Switcher -->
+      <div class="flex items-center space-x-4">
+        <nav class="hidden md:flex items-center space-x-6 text-sm">
+          <a href="#simulator" class="text-slate-300 hover:text-emerald-400 transition-colors" data-i18n="navSimulator">Demo Tương Tác</a>
+          <a href="#features" class="text-slate-300 hover:text-emerald-400 transition-colors" data-i18n="navFeatures">Tính Năng</a>
+          <a href="#installation" class="text-slate-300 hover:text-emerald-400 transition-colors" data-i18n="navInstall">Cài Đặt</a>
+          <a href="#templates" class="text-slate-300 hover:text-emerald-400 transition-colors" data-i18n="navTemplates">File Mẫu</a>
+        </nav>
+
+        <!-- Language Selector -->
+        <div class="flex items-center bg-slate-800 border border-slate-700 rounded-lg p-1">
+          <button id="lang-vi-btn" onclick="setLanguage('vi')" class="px-2.5 py-1 text-xs font-bold rounded flex items-center gap-1 transition bg-brand-500 text-white">
+            <span>🇻🇳</span> VI
+          </button>
+          <button id="lang-en-btn" onclick="setLanguage('en')" class="px-2.5 py-1 text-xs font-bold rounded flex items-center gap-1 transition text-slate-400 hover:text-white">
+            <span>🇬🇧</span> EN
+          </button>
+        </div>
+
+        <a href="#simulator" class="hidden sm:inline-flex items-center px-3.5 py-1.5 text-xs font-semibold text-white bg-brand-500 hover:bg-brand-600 rounded-lg shadow-md transition-all" data-i18n="btnTryNow">
+          Thử Nghiệm Ngay
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative pt-16 pb-20 overflow-hidden">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(32,165,58,0.12),transparent_50%)]"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800/80 border border-slate-700 text-xs text-slate-300 mb-6">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span data-i18n="heroBadge">Giao diện trực quan hóa Systemctl & Journalctl trên Linux aaPanel</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight mb-6">
+        <span data-i18n="heroTitle1">Quản lý Dịch Vụ Hệ Thống</span> <br class="hidden sm:block" />
+        <span class="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent" data-i18n="heroTitle2">Dễ Dàng Trực Tiếp Trên aaPanel</span>
+      </h1>
+      <p class="max-w-2xl mx-auto text-base sm:text-lg text-slate-400 mb-8 leading-relaxed" data-i18n="heroDesc">
+        Không cần gõ lệnh SSH phức tạp. Bật/tắt, khởi động lại, kích hoạt tự chạy cùng hệ thống (Auto-start), xem live logs và khởi tạo service Node.js, Python, Odoo chỉ với vài cú nhấp chuột.
+      </p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#simulator" class="px-6 py-3 rounded-xl bg-brand-500 hover:bg-brand-600 font-semibold text-white shadow-lg shadow-brand-500/25 transition-all" data-i18n="heroBtnDemo">
+          🎮 Mở Trình Mô Phỏng (Interactive Demo)
+        </a>
+        <a href="#installation" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 font-semibold text-slate-200 border border-slate-700 transition-all" data-i18n="heroBtnInstall">
+          📖 Hướng Dẫn Cài Đặt
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE SIMULATOR (MÔ PHỎNG GIAO DIỆN AAPANEL PLUGIN) -->
+  <section id="simulator" class="py-12 bg-slate-950/60 border-y border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <h2 class="text-2xl sm:text-3xl font-bold text-white mb-2" data-i18n="simTitle">Trình Mô Phỏng Plugin Thực Tế</h2>
+        <p class="text-slate-400 text-sm" data-i18n="simDesc">Thao tác mô phỏng trực quan: Start, Stop, Restart, Auto-start, tạo Service và xem Realtime Journalctl Logs.</p>
+      </div>
+
+      <!-- APP WINDOW MOCKUP -->
+      <div class="rounded-2xl border border-slate-800 bg-[#131b2e] shadow-2xl overflow-hidden">
+        <!-- Panel Window Top Bar -->
+        <div class="bg-[#0f172a] px-4 py-3 border-b border-slate-800 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-red-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-yellow-500/80 inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-green-500/80 inline-block"></span>
+            <span class="ml-3 text-xs font-mono text-slate-400">aaPanel &gt; App Store &gt; Systemd Service Manager 1.0</span>
+          </div>
+          <div class="flex items-center space-x-3 text-xs">
+            <span class="inline-flex items-center gap-1.5 text-emerald-400 font-mono">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+              <span data-i18n="simDaemonActive">Daemon: Active</span>
+            </span>
+            <button onclick="resetDemoData()" class="text-slate-400 hover:text-white px-2 py-1 rounded bg-slate-800 border border-slate-700 transition" data-i18n="btnResetDemo">
+              Khôi phục demo
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel Action Bar -->
+        <div class="p-4 sm:p-5 border-b border-slate-800/80 bg-slate-900/40 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <div class="flex flex-wrap gap-2">
+            <button id="tab-custom" onclick="switchTab('custom')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-brand-500 text-white shadow-sm transition-all">
+              <span data-i18n="tabCustomServices">Dịch Vụ Tùy Chỉnh</span> (<span id="count-custom">2</span>)
+            </button>
+            <button id="tab-system" onclick="switchTab('system')" class="px-4 py-2 text-xs font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all">
+              <span data-i18n="tabSystemServices">Dịch Vụ Hệ Thống</span> (<span id="count-system">3</span>)
+            </button>
+          </div>
+          <div class="flex items-center gap-3 w-full sm:w-auto">
+            <div class="relative flex-1 sm:w-64">
+              <input type="text" id="searchInput" oninput="filterServices()" placeholder="Tìm kiếm service..." class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-brand-500" />
+            </div>
+            <button onclick="openModal('addServiceModal')" class="px-3.5 py-1.5 bg-brand-500 hover:bg-brand-600 text-white rounded-lg text-xs font-semibold flex items-center gap-1.5 whitespace-nowrap shadow-sm">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+              <span data-i18n="btnAddService">Thêm Dịch Vụ</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Services Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-slate-800 bg-slate-900/60 text-slate-400 uppercase tracking-wider font-semibold">
+                <th class="py-3 px-4" data-i18n="thName">Tên Service</th>
+                <th class="py-3 px-4" data-i18n="thDesc">Mô tả</th>
+                <th class="py-3 px-4" data-i18n="thStatus">Trạng thái (Status)</th>
+                <th class="py-3 px-4" data-i18n="thAutostart">Khởi động cùng OS</th>
+                <th class="py-3 px-4 text-right" data-i18n="thActions">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="serviceTableBody" class="divide-y divide-slate-800/60 font-mono">
+              <!-- Dynamically rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Simulation Footer Info -->
+        <div class="p-3 bg-slate-950/80 border-t border-slate-800 text-[11px] text-slate-500 flex justify-between items-center">
+          <span data-i18n="simNote">* Các thao tác trên bảng sẽ thực hiện mô phỏng tức thời lệnh systemctl tương ứng.</span>
+          <span id="toastMsg" class="text-emerald-400 font-sans transition-opacity duration-300 opacity-0">OK</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES SECTION -->
+  <section id="features" class="py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl font-bold text-white mb-4" data-i18n="featTitle">Các Tính Năng Trọng Tâm</h2>
+        <p class="text-slate-400 text-base" data-i18n="featSubtitle">Được thiết kế tinh gọn, an toàn và tối ưu cho quản trị viên máy chủ Linux chạy aaPanel.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Card 1 -->
+        <div class="glass-card p-6 rounded-2xl hover:border-slate-700 transition">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-2xl mb-4">⚡</div>
+          <h3 class="text-lg font-bold text-white mb-2" data-i18n="feat1Title">Thao Tác 1 Chạm (1-Click Action)</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="feat1Desc">Thực hiện start, stop, restart, reload các dịch vụ trực tiếp mà không cần mở terminal SSH.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="glass-card p-6 rounded-2xl hover:border-slate-700 transition">
+          <div class="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 flex items-center justify-center text-2xl mb-4">🚀</div>
+          <h3 class="text-lg font-bold text-white mb-2" data-i18n="feat2Title">Tạo Service 2 Chế Độ</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="feat2Desc">Hỗ trợ Quick Form tiện lợi cho người mới bắt đầu và Raw Unit Editor linh hoạt cho sysadmin chuyên sâu.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="glass-card p-6 rounded-2xl hover:border-slate-700 transition">
+          <div class="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center text-2xl mb-4">📜</div>
+          <h3 class="text-lg font-bold text-white mb-2" data-i18n="feat3Title">Live Journalctl Logs</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="feat3Desc">Xem nhật ký dịch vụ trực quan theo thời gian thực từ journalctl, giúp điều tra và xử lý sự cố ngay tức thì.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="glass-card p-6 rounded-2xl hover:border-slate-700 transition">
+          <div class="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-2xl mb-4">🔄</div>
+          <h3 class="text-lg font-bold text-white mb-2" data-i18n="feat4Title">Tự Động Khởi Động (Boot on Start)</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="feat4Desc">Bật hoặc tắt cờ enable / disable để đảm bảo dịch vụ luôn tự khởi động cùng hệ điều hành.</p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="glass-card p-6 rounded-2xl hover:border-slate-700 transition">
+          <div class="w-12 h-12 rounded-xl bg-red-500/10 text-red-400 flex items-center justify-center text-2xl mb-4">🛡️</div>
+          <h3 class="text-lg font-bold text-white mb-2" data-i18n="feat5Title">Phân Loại An Toàn</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="feat5Desc">Phân chia rõ ràng giữa Dịch vụ tùy chỉnh (Custom) và Dịch vụ hệ thống cốt lõi, tránh thao tác nhầm gây mất kết nối máy chủ.</p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="glass-card p-6 rounded-2xl hover:border-slate-700 transition">
+          <div class="w-12 h-12 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-2xl mb-4">🧩</div>
+          <h3 class="text-lg font-bold text-white mb-2" data-i18n="feat6Title">Tích Hợp Chuẩn aaPanel</h3>
+          <p class="text-sm text-slate-400 leading-relaxed" data-i18n="feat6Desc">Đóng gói theo chuẩn plugin aaPanel với backend Python và frontend HTML/JS, hoạt động nhẹ nhàng và tương thích cao.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALLATION GUIDE -->
+  <section id="installation" class="py-16 bg-slate-950/80 border-t border-slate-800">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-white mb-3" data-i18n="instTitle">Hướng Dẫn Cài Đặt & Sử Dụng</h2>
+        <p class="text-slate-400 text-sm" data-i18n="instSubtitle">Các bước đưa plugin vào aaPanel của bạn nhanh chóng chỉ trong 2 phút.</p>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Step 1 -->
+        <div class="glass-card p-6 rounded-xl flex flex-col md:flex-row gap-6 items-start">
+          <div class="w-10 h-10 rounded-full bg-brand-500/20 text-brand-500 border border-brand-500/30 flex items-center justify-center font-bold text-base shrink-0">1</div>
+          <div class="flex-1">
+            <h3 class="text-base font-bold text-white mb-2" data-i18n="step1Title">Tải mã nguồn plugin vào máy chủ</h3>
+            <p class="text-sm text-slate-400 mb-3" data-i18n="step1Desc">Đăng nhập SSH máy chủ Linux, chuyển tới thư mục plugin của aaPanel và giải nén hoặc clone repository:</p>
+            <div class="bg-black/60 rounded-lg p-3 font-mono text-xs text-emerald-400 border border-slate-800">
+              <code>cd /www/server/panel/plugin</code><br/>
+              <code># Clone hoặc tải zip plugin Systemd-Service-Manager vào thư mục này</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="glass-card p-6 rounded-xl flex flex-col md:flex-row gap-6 items-start">
+          <div class="w-10 h-10 rounded-full bg-brand-500/20 text-brand-500 border border-brand-500/30 flex items-center justify-center font-bold text-base shrink-0">2</div>
+          <div class="flex-1">
+            <h3 class="text-base font-bold text-white mb-2" data-i18n="step2Title">Chạy script cài đặt (install.sh)</h3>
+            <p class="text-sm text-slate-400 mb-3" data-i18n="step2Desc">Chạy lệnh shell để cấp quyền và khởi tạo cấu hình cho aaPanel:</p>
+            <div class="bg-black/60 rounded-lg p-3 font-mono text-xs text-emerald-400 border border-slate-800">
+              <code>cd /www/server/panel/plugin/systemd_manager</code><br/>
+              <code>bash install.sh install</code>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="glass-card p-6 rounded-xl flex flex-col md:flex-row gap-6 items-start">
+          <div class="w-10 h-10 rounded-full bg-brand-500/20 text-brand-500 border border-brand-500/30 flex items-center justify-center font-bold text-base shrink-0">3</div>
+          <div class="flex-1">
+            <h3 class="text-base font-bold text-white mb-2" data-i18n="step3Title">Mở plugin từ giao diện aaPanel</h3>
+            <p class="text-sm text-slate-400 mb-2" data-i18n="step3Desc">Mở aaPanel Web UI &gt; App Store &gt; danh mục Third-party app để bắt đầu quản lý các dịch vụ một cách trực quan.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEMPLATES & CHEAT SHEET -->
+  <section id="templates" class="py-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-10">
+        <h2 class="text-3xl font-bold text-white mb-3" data-i18n="tmplTitle">Mẫu Cấu Hình Systemd Tiêu Chuẩn</h2>
+        <p class="text-slate-400 text-sm" data-i18n="tmplSubtitle">Sao chép nhanh các cấu hình phổ biến để dán vào tab Raw Unit của plugin.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Template 1: Node.js / Next.js -->
+        <div class="glass-card p-5 rounded-xl border border-slate-800">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="font-bold text-emerald-400 text-sm">📦 Node.js / Next.js / Express</h4>
+            <button onclick="copySnippet('snippet-node')" class="text-xs text-slate-400 hover:text-white bg-slate-800 px-2 py-1 rounded" data-i18n="btnCopy">Copy</button>
+          </div>
+          <pre id="snippet-node" class="bg-black/70 p-3 rounded-lg font-mono text-[11px] text-slate-300 overflow-x-auto border border-slate-800/80"><code>[Unit]
+Description=Node.js Production Application
+After=network.target
+
+[Service]
+Type=simple
+User=www
+WorkingDirectory=/www/wwwroot/my-node-app
+ExecStart=/usr/bin/npm start
+Restart=always
+RestartSec=5
+Environment=NODE_ENV=production PORT=3000
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+        </div>
+
+        <!-- Template 2: Python / FastAPI / Odoo -->
+        <div class="glass-card p-5 rounded-xl border border-slate-800">
+          <div class="flex justify-between items-center mb-3">
+            <h4 class="font-bold text-teal-400 text-sm">🐍 Python / FastAPI / Odoo Instance</h4>
+            <button onclick="copySnippet('snippet-python')" class="text-xs text-slate-400 hover:text-white bg-slate-800 px-2 py-1 rounded" data-i18n="btnCopy">Copy</button>
+          </div>
+          <pre id="snippet-python" class="bg-black/70 p-3 rounded-lg font-mono text-[11px] text-slate-300 overflow-x-auto border border-slate-800/80"><code>[Unit]
+Description=FastAPI / Uvicorn Service
+After=network.target
+
+[Service]
+Type=simple
+User=www
+WorkingDirectory=/www/wwwroot/my-api
+ExecStart=/www/wwwroot/my-api/venv/bin/uvicorn main:app --host 127.0.0.1 --port 8000
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target</code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MODAL: ADD SERVICE -->
+  <div id="addServiceModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-xl overflow-hidden shadow-2xl">
+      <div class="px-5 py-4 border-b border-slate-800 flex justify-between items-center bg-slate-950/60">
+        <h3 class="font-bold text-white text-sm" data-i18n="modalAddTitle">Thêm Dịch Vụ Mới (Add Systemd Service)</h3>
+        <button onclick="closeModal('addServiceModal')" class="text-slate-400 hover:text-white text-lg">&times;</button>
+      </div>
+
+      <!-- Tab Switch inside Modal -->
+      <div class="px-5 pt-4 flex gap-4 border-b border-slate-800 text-xs">
+        <button id="modalTab-form" onclick="switchModalTab('form')" class="pb-2 border-b-2 border-brand-500 font-semibold text-brand-500" data-i18n="modalTabQuick">
+          1. Quick Form (Dễ dùng)
+        </button>
+        <button id="modalTab-raw" onclick="switchModalTab('raw')" class="pb-2 border-b-2 border-transparent font-semibold text-slate-400 hover:text-white" data-i18n="modalTabRaw">
+          2. Raw Unit File (Nâng cao)
+        </button>
+      </div>
+
+      <div class="p-5 text-xs">
+        <!-- Quick Form -->
+        <form id="quickForm" onsubmit="handleCreateService(event)" class="space-y-3.5">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1" data-i18n="lblServiceName">Tên Dịch Vụ (.service):</label>
+            <input type="text" id="form-name" required placeholder="ví dụ: my-backend.service" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-1.5 text-white font-mono focus:border-brand-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1" data-i18n="lblServiceDesc">Mô tả ngắn gọn:</label>
+            <input type="text" id="form-desc" placeholder="Dịch vụ backend API" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-1.5 text-white focus:border-brand-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1" data-i18n="lblServiceCwd">Thư mục làm việc (WorkingDirectory):</label>
+            <input type="text" id="form-cwd" required placeholder="/www/wwwroot/my-app" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-1.5 text-white font-mono focus:border-brand-500 outline-none" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1" data-i18n="lblServiceCmd">Lệnh thực thi (ExecStart):</label>
+            <input type="text" id="form-cmd" required placeholder="/usr/bin/npm start hoặc python3 main.py" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-1.5 text-white font-mono focus:border-brand-500 outline-none" />
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-slate-300 font-medium mb-1" data-i18n="lblServiceUser">User thực thi:</label>
+              <select id="form-user" class="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-white outline-none">
+                <option value="www">www (Web standard)</option>
+                <option value="root">root</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-300 font-medium mb-1" data-i18n="lblServiceRestart">Chính sách Restart:</label>
+              <select id="form-restart" class="w-full bg-slate-950 border border-slate-800 rounded px-2.5 py-1.5 text-white outline-none">
+                <option value="always">always</option>
+                <option value="on-failure">on-failure</option>
+                <option value="no">no</option>
+              </select>
+            </div>
+          </div>
+          <div class="pt-2 flex justify-end gap-2">
+            <button type="button" onclick="closeModal('addServiceModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium" data-i18n="btnCancel">Hủy bỏ</button>
+            <button type="submit" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded font-medium" data-i18n="btnSaveAndStart">Lưu & Khởi Chạy</button>
+          </div>
+        </form>
+
+        <!-- Raw Unit Form -->
+        <div id="rawUnitForm" class="hidden space-y-3">
+          <div>
+            <label class="block text-slate-300 font-medium mb-1" data-i18n="lblRawFileName">Tên file unit:</label>
+            <input type="text" id="raw-name" placeholder="custom-worker.service" class="w-full bg-slate-950 border border-slate-800 rounded px-3 py-1.5 text-white font-mono outline-none" />
+          </div>
+          <div>
+            <label class="block text-slate-300 font-medium mb-1" data-i18n="lblRawContent">Nội dung Systemd Unit (.service):</label>
+            <textarea id="raw-content" rows="9" class="w-full bg-slate-950 border border-slate-800 rounded p-2.5 text-emerald-400 font-mono text-[11px] outline-none">[Unit]
+Description=My Custom Daemon
+After=network.target
+
+[Service]
+Type=simple
+User=www
+WorkingDirectory=/www/wwwroot/
+ExecStart=/usr/bin/python3 -m http.server 8080
+Restart=always
+
+[Install]
+WantedBy=multi-user.target</textarea>
+          </div>
+          <div class="pt-2 flex justify-end gap-2">
+            <button type="button" onclick="closeModal('addServiceModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-medium" data-i18n="btnCancel">Hủy</button>
+            <button type="button" onclick="handleCreateRawService()" class="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded font-medium" data-i18n="btnSaveUnit">Lưu Unit File</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: LIVE LOG VIEWER -->
+  <div id="logModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-[#0b0f19] border border-slate-800 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col h-[480px]">
+      <div class="px-4 py-3 border-b border-slate-800 flex justify-between items-center bg-slate-950">
+        <div class="flex items-center space-x-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="font-mono text-xs text-white">journalctl -u <span id="logServiceName">service</span> -n 50 --no-pager</span>
+        </div>
+        <button onclick="closeModal('logModal')" class="text-slate-400 hover:text-white text-lg">&times;</button>
+      </div>
+      <div id="logConsole" class="flex-1 p-4 font-mono text-[11px] leading-relaxed text-slate-300 overflow-y-auto bg-black/90 space-y-1"></div>
+      <div class="px-4 py-2.5 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-xs">
+        <span class="text-slate-500 text-[11px]" data-i18n="logFooterTip">Nhấn "Làm mới" để kéo các log mới nhất từ server</span>
+        <div class="flex gap-2">
+          <button onclick="refreshCurrentLogs()" class="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded text-xs" data-i18n="btnRefreshLogs">Làm mới</button>
+          <button onclick="closeModal('logModal')" class="px-3 py-1 bg-brand-500 hover:bg-brand-600 text-white rounded text-xs" data-i18n="btnClose">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="py-8 border-t border-slate-800/80 bg-slate-950 text-center text-xs text-slate-500">
+    <p>Systemd Service Manager v1.0 • MIT License • Built for aaPanel Linux</p>
+    <p class="mt-1" data-i18n="footerSub">Dễ dàng giám sát, triển khai và tự động hóa các service trên máy chủ.</p>
+  </footer>
+
+  <!-- JAVASCRIPT LOGIC & I18N -->
+  <script>
+    // Dictionary translations
+    const i18nData = {
+      vi: {
+        appSubtitle: "aaPanel Extension Plugin",
+        navSimulator: "Demo Tương Tác",
+        navFeatures: "Tính Năng",
+        navInstall: "Cài Đặt",
+        navTemplates: "File Mẫu",
+        btnTryNow: "Thử Nghiệm Ngay",
+        heroBadge: "Giao diện trực quan hóa Systemctl & Journalctl trên Linux aaPanel",
+        heroTitle1: "Quản lý Dịch Vụ Hệ Thống",
+        heroTitle2: "Dễ Dàng Trực Tiếp Trên aaPanel",
+        heroDesc: "Không cần gõ lệnh SSH phức tạp. Bật/tắt, khởi động lại, kích hoạt tự chạy cùng hệ thống (Auto-start), xem live logs và khởi tạo service Node.js, Python, Odoo chỉ với vài cú nhấp chuột.",
+        heroBtnDemo: "🎮 Mở Trình Mô Phỏng (Interactive Demo)",
+        heroBtnInstall: "📖 Hướng Dẫn Cài Đặt",
+        simTitle: "Trình Mô Phỏng Plugin Thực Tế",
+        simDesc: "Thao tác mô phỏng trực quan: Start, Stop, Restart, Auto-start, tạo Service và xem Realtime Journalctl Logs.",
+        simDaemonActive: "Daemon: Đang hoạt động",
+        btnResetDemo: "Khôi phục demo",
+        tabCustomServices: "Dịch Vụ Tùy Chỉnh",
+        tabSystemServices: "Dịch Vụ Hệ Thống",
+        btnAddService: "Thêm Dịch Vụ",
+        searchPlaceholder: "Tìm kiếm service...",
+        thName: "Tên Service",
+        thDesc: "Mô tả",
+        thStatus: "Trạng thái (Status)",
+        thAutostart: "Khởi động cùng OS",
+        thActions: "Thao tác",
+        simNote: "* Các thao tác trên bảng sẽ thực hiện mô phỏng tức thời lệnh systemctl tương ứng.",
+        featTitle: "Các Tính Năng Trọng Tâm",
+        featSubtitle: "Được thiết kế tinh gọn, an toàn và tối ưu cho quản trị viên máy chủ Linux chạy aaPanel.",
+        feat1Title: "Thao Tác 1 Chạm (1-Click Action)",
+        feat1Desc: "Thực hiện start, stop, restart, reload các dịch vụ trực tiếp mà không cần mở terminal SSH.",
+        feat2Title: "Tạo Service 2 Chế Độ",
+        feat2Desc: "Hỗ trợ Quick Form tiện lợi cho người mới bắt đầu và Raw Unit Editor linh hoạt cho sysadmin chuyên sâu.",
+        feat3Title: "Live Journalctl Logs",
+        feat3Desc: "Xem nhật ký dịch vụ trực quan theo thời gian thực từ journalctl, giúp điều tra và xử lý sự cố ngay tức thì.",
+        feat4Title: "Tự Động Khởi Động (Boot on Start)",
+        feat4Desc: "Bật hoặc tắt cờ enable / disable để đảm bảo dịch vụ luôn tự khởi động cùng hệ điều hành.",
+        feat5Title: "Phân Loại An Toàn",
+        feat5Desc: "Phân chia rõ ràng giữa Dịch vụ tùy chỉnh (Custom) và Dịch vụ hệ thống cốt lõi, tránh thao tác nhầm gây mất kết nối máy chủ.",
+        feat6Title: "Tích Hợp Chuẩn aaPanel",
+        feat6Desc: "Đóng gói theo chuẩn plugin aaPanel với backend Python và frontend HTML/JS, hoạt động nhẹ nhàng và tương thích cao.",
+        instTitle: "Hướng Dẫn Cài Đặt & Sử Dụng",
+        instSubtitle: "Các bước đưa plugin vào aaPanel của bạn nhanh chóng chỉ trong 2 phút.",
+        step1Title: "Tải mã nguồn plugin vào máy chủ",
+        step1Desc: "Đăng nhập SSH máy chủ Linux, chuyển tới thư mục plugin của aaPanel và giải nén hoặc clone repository:",
+        step2Title: "Chạy script cài đặt (install.sh)",
+        step2Desc: "Chạy lệnh shell để cấp quyền và khởi tạo cấu hình cho aaPanel:",
+        step3Title: "Mở plugin từ giao diện aaPanel",
+        step3Desc: "Mở aaPanel Web UI > App Store > danh mục Third-party app để bắt đầu quản lý các dịch vụ một cách trực quan.",
+        tmplTitle: "Mẫu Cấu Hình Systemd Tiêu Chuẩn",
+        tmplSubtitle: "Sao chép nhanh các cấu hình phổ biến để dán vào tab Raw Unit của plugin.",
+        btnCopy: "Sao chép",
+        modalAddTitle: "Thêm Dịch Vụ Mới (Add Systemd Service)",
+        modalTabQuick: "1. Quick Form (Dễ dùng)",
+        modalTabRaw: "2. Raw Unit File (Nâng cao)",
+        lblServiceName: "Tên Dịch Vụ (.service):",
+        lblServiceDesc: "Mô tả ngắn gọn:",
+        lblServiceCwd: "Thư mục làm việc (WorkingDirectory):",
+        lblServiceCmd: "Lệnh thực thi (ExecStart):",
+        lblServiceUser: "User thực thi:",
+        lblServiceRestart: "Chính sách Restart:",
+        btnCancel: "Hủy bỏ",
+        btnSaveAndStart: "Lưu & Khởi Chạy",
+        lblRawFileName: "Tên file unit:",
+        lblRawContent: "Nội dung Systemd Unit (.service):",
+        btnSaveUnit: "Lưu Unit File",
+        logFooterTip: "Nhấn 'Làm mới' để kéo các log mới nhất từ server",
+        btnRefreshLogs: "Làm mới",
+        btnClose: "Đóng",
+        footerSub: "Dễ dàng giám sát, triển khai và tự động hóa các service trên máy chủ.",
+        msgStopped: "Đã dừng service",
+        msgStarted: "Đã khởi động service",
+        msgRestarted: "Đã khởi động lại",
+        msgEnabled: "đã bật tự khởi động",
+        msgDisabled: "đã tắt tự khởi động",
+        msgCreated: "Đã tạo và kích hoạt thành công",
+        msgDeleted: "Đã gỡ bỏ service thành công.",
+        confirmDelete: "Bạn có chắc chắn muốn xóa service này khỏi hệ thống?"
+      },
+      en: {
+        appSubtitle: "aaPanel Extension Plugin",
+        navSimulator: "Interactive Demo",
+        navFeatures: "Features",
+        navInstall: "Installation",
+        navTemplates: "Unit Templates",
+        btnTryNow: "Try Demo Now",
+        heroBadge: "Visual GUI for Systemctl & Journalctl on aaPanel Linux",
+        heroTitle1: "Manage System Services",
+        heroTitle2: "Effortlessly on aaPanel GUI",
+        heroDesc: "No more complex SSH commands. Start, stop, restart, enable boot on startup, view live journal logs, and launch Node.js, Python, or Odoo services with just a few clicks.",
+        heroBtnDemo: "🎮 Open Interactive Demo",
+        heroBtnInstall: "📖 Installation Guide",
+        simTitle: "Live Interactive Simulator",
+        simDesc: "Experience the real plugin workflow: Start, Stop, Restart, Toggle Auto-start, Create Services, and Inspect Live Journalctl Logs.",
+        simDaemonActive: "Daemon: Running",
+        btnResetDemo: "Reset demo",
+        tabCustomServices: "Custom Services",
+        tabSystemServices: "System Services",
+        btnAddService: "Add Service",
+        searchPlaceholder: "Search services...",
+        thName: "Service Name",
+        thDesc: "Description",
+        thStatus: "Status",
+        thAutostart: "Boot on Start",
+        thActions: "Actions",
+        simNote: "* Table actions simulate immediate systemctl / journalctl commands in real time.",
+        featTitle: "Core Features",
+        featSubtitle: "Clean, robust, and purpose-built for Linux server administrators using aaPanel.",
+        feat1Title: "1-Click Actions",
+        feat1Desc: "Instantly start, stop, restart, and reload services directly without needing SSH terminal access.",
+        feat2Title: "Dual Service Creation",
+        feat2Desc: "Offers an intuitive Quick Form for beginners and a full Raw Unit Editor for experienced sysadmins.",
+        feat3Title: "Live Journalctl Logs",
+        feat3Desc: "Stream realtime service logs from journalctl to monitor heartbeat and troubleshoot crashes on the fly.",
+        feat4Title: "Boot Auto-Start Toggle",
+        feat4Desc: "Easily toggle enable / disable states so critical background applications start reliably upon server reboot.",
+        feat5Title: "Safe Service Categorization",
+        feat5Desc: "Distinctly separates custom application services from core system daemons to prevent accidental downtime.",
+        feat6Title: "Native aaPanel Architecture",
+        feat6Desc: "Built following official aaPanel extension standards with a Python backend and lightweight HTML/JS frontend.",
+        instTitle: "Installation & Setup Guide",
+        instSubtitle: "Deploy the plugin into your aaPanel environment in just 2 minutes.",
+        step1Title: "Download plugin source to server",
+        step1Desc: "SSH into your Linux server, navigate to aaPanel's plugin directory and clone or extract the files:",
+        step2Title: "Execute the installer script (install.sh)",
+        step2Desc: "Run the shell script to set execution permissions and initialize the panel configuration:",
+        step3Title: "Open from aaPanel Dashboard",
+        step3Desc: "Head to aaPanel Web UI > App Store > Third-party apps tab to launch the GUI manager.",
+        tmplTitle: "Standard Systemd Unit Templates",
+        tmplSubtitle: "Quickly copy standard unit templates to paste into the Raw Unit editor.",
+        btnCopy: "Copy",
+        modalAddTitle: "Add New Systemd Service",
+        modalTabQuick: "1. Quick Form (Simple)",
+        modalTabRaw: "2. Raw Unit File (Advanced)",
+        lblServiceName: "Service Name (.service):",
+        lblServiceDesc: "Brief Description:",
+        lblServiceCwd: "Working Directory (WorkingDirectory):",
+        lblServiceCmd: "Execute Command (ExecStart):",
+        lblServiceUser: "Run as User:",
+        lblServiceRestart: "Restart Policy:",
+        btnCancel: "Cancel",
+        btnSaveAndStart: "Save & Start",
+        lblRawFileName: "Unit File Name:",
+        lblRawContent: "Systemd Unit Content (.service):",
+        btnSaveUnit: "Save Unit File",
+        logFooterTip: "Click 'Refresh' to fetch the latest stdout/stderr logs from server",
+        btnRefreshLogs: "Refresh",
+        btnClose: "Close",
+        footerSub: "Effortlessly monitor, deploy, and automate Linux server services.",
+        msgStopped: "Stopped service",
+        msgStarted: "Started service",
+        msgRestarted: "Restarted",
+        msgEnabled: "enabled auto-start",
+        msgDisabled: "disabled auto-start",
+        msgCreated: "Created & activated successfully",
+        msgDeleted: "Service removed successfully.",
+        confirmDelete: "Are you sure you want to remove this service from systemd?"
+      }
+    };
+
+    let currentLang = 'vi';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      const t = i18nData[lang];
+
+      // Update button styles
+      const viBtn = document.getElementById('lang-vi-btn');
+      const enBtn = document.getElementById('lang-en-btn');
+      if (lang === 'vi') {
+        viBtn.className = 'px-2.5 py-1 text-xs font-bold rounded flex items-center gap-1 transition bg-brand-500 text-white';
+        enBtn.className = 'px-2.5 py-1 text-xs font-bold rounded flex items-center gap-1 transition text-slate-400 hover:text-white';
+      } else {
+        enBtn.className = 'px-2.5 py-1 text-xs font-bold rounded flex items-center gap-1 transition bg-brand-500 text-white';
+        viBtn.className = 'px-2.5 py-1 text-xs font-bold rounded flex items-center gap-1 transition text-slate-400 hover:text-white';
+      }
+
+      // Update all elements with data-i18n
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) {
+          el.innerText = t[key];
+        }
+      });
+
+      // Update placeholders
+      const search = document.getElementById('searchInput');
+      if (search) search.placeholder = t.searchPlaceholder;
+
+      renderTable();
+    }
+
+    // Mock services data
+    const initialServices = [
+      {
+        id: 'odoo-prod',
+        name: 'odoo-prod.service',
+        desc: { vi: 'Odoo 19 ERP Franchise Instance', en: 'Odoo 19 ERP Franchise Instance' },
+        type: 'custom',
+        active: true,
+        enabled: true,
+        logs: [
+          'INFO odoo.service: odoo server running at 127.0.0.1:8069',
+          'INFO odoo.addons.base: Loading 45 modules...',
+          'INFO odoo.http: HTTP service ready and accepting connections',
+          'SUCCESS: Healthcheck passed (200 OK)'
+        ]
+      },
+      {
+        id: 'node-api',
+        name: 'node-store-api.service',
+        desc: { vi: 'API Backend Cửa Hàng E-commerce', en: 'E-commerce REST Backend API' },
+        type: 'custom',
+        active: true,
+        enabled: false,
+        logs: [
+          'server started on port 4000',
+          'Database PostgreSQL connected successfully',
+          'Redis Cache linked at 127.0.0.1:6379'
+        ]
+      },
+      {
+        id: 'nginx',
+        name: 'nginx.service',
+        desc: { vi: 'Máy chủ Web & Reverse Proxy', en: 'High Performance HTTP and Reverse Proxy' },
+        type: 'system',
+        active: true,
+        enabled: true,
+        logs: [
+          'Starting A high performance web server and a reverse proxy server...',
+          'nginx: configuration file /etc/nginx/nginx.conf test is successful',
+          'Started A high performance web server and a reverse proxy server.'
+        ]
+      },
+      {
+        id: 'bt',
+        name: 'bt.service',
+        desc: { vi: 'aaPanel Control Panel Daemon', en: 'aaPanel Control Panel Daemon Service' },
+        type: 'system',
+        active: true,
+        enabled: true,
+        logs: [
+          'Starting aaPanel control server...',
+          'Starting aaPanel task scheduler...',
+          'aaPanel service is active and running.'
+        ]
+      },
+      {
+        id: 'redis',
+        name: 'redis-server.service',
+        desc: { vi: 'Bộ nhớ đệm In-Memory Key-Value', en: 'Advanced key-value store cache' },
+        type: 'system',
+        active: false,
+        enabled: true,
+        logs: [
+          'Stopping Redis In-Memory Data Store...',
+          'Saving DB to disk completed.',
+          'Redis stopped successfully.'
+        ]
+      }
+    ];
+
+    let services = JSON.parse(JSON.stringify(initialServices));
+    let currentTab = 'custom';
+    let viewingServiceId = null;
+
+    function renderTable() {
+      const tbody = document.getElementById('serviceTableBody');
+      const searchVal = document.getElementById('searchInput').value.toLowerCase();
+      const t = i18nData[currentLang];
+      tbody.innerHTML = '';
+
+      const filtered = services.filter(s => {
+        const matchesTab = s.type === currentTab;
+        const descText = typeof s.desc === 'object' ? (s.desc[currentLang] || s.desc.en) : s.desc;
+        const matchesSearch = s.name.toLowerCase().includes(searchVal) || descText.toLowerCase().includes(searchVal);
+        return matchesTab && matchesSearch;
+      });
+
+      // Update counters
+      document.getElementById('count-custom').innerText = services.filter(s => s.type === 'custom').length;
+      document.getElementById('count-system').innerText = services.filter(s => s.type === 'system').length;
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-slate-500 font-sans">${currentLang === 'vi' ? 'Không tìm thấy service nào phù hợp.' : 'No matching services found.'}</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-900/40 transition-colors';
+        const descText = typeof s.desc === 'object' ? (s.desc[currentLang] || s.desc.en) : s.desc;
+
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-semibold text-white">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full ${s.active ? 'bg-emerald-400' : 'bg-rose-500'}"></span>
+              ${s.name}
+            </div>
+          </td>
+          <td class="py-3 px-4 text-slate-400 font-sans text-xs">${descText}</td>
+          <td class="py-3 px-4">
+            <span class="px-2 py-0.5 rounded text-[11px] font-medium ${s.active ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'}">
+              ${s.active ? '● active (running)' : '○ inactive (dead)'}
+            </span>
+          </td>
+          <td class="py-3 px-4">
+            <button onclick="toggleAutoStart('${s.id}')" title="Toggle enable/disable" class="px-2.5 py-0.5 rounded text-[11px] font-sans transition ${s.enabled ? 'bg-blue-500/15 text-blue-400 border border-blue-500/30 hover:bg-blue-500/25' : 'bg-slate-800 text-slate-500 hover:text-slate-300'}">
+              ${s.enabled ? '✓ Enabled' : '✕ Disabled'}
+            </button>
+          </td>
+          <td class="py-3 px-4 text-right space-x-1">
+            ${s.active ? 
+              `<button onclick="toggleServiceAction('${s.id}', 'stop')" class="px-2 py-1 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 rounded font-sans">Stop</button>
+               <button onclick="toggleServiceAction('${s.id}', 'restart')" class="px-2 py-1 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/20 rounded font-sans">Restart</button>` :
+              `<button onclick="toggleServiceAction('${s.id}', 'start')" class="px-2 py-1 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/20 rounded font-sans">Start</button>`
+            }
+            <button onclick="openLogsModal('${s.id}')" class="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded font-sans">Logs</button>
+            ${s.type === 'custom' ? `<button onclick="deleteCustomService('${s.id}')" class="px-2 py-1 bg-red-950/40 hover:bg-red-900/60 text-red-400 rounded font-sans" title="Delete">&times;</button>` : ''}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function switchTab(type) {
+      currentTab = type;
+      const tabCustom = document.getElementById('tab-custom');
+      const tabSystem = document.getElementById('tab-system');
+
+      if (type === 'custom') {
+        tabCustom.className = 'px-4 py-2 text-xs font-semibold rounded-lg bg-brand-500 text-white shadow-sm transition-all';
+        tabSystem.className = 'px-4 py-2 text-xs font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all';
+      } else {
+        tabSystem.className = 'px-4 py-2 text-xs font-semibold rounded-lg bg-brand-500 text-white shadow-sm transition-all';
+        tabCustom.className = 'px-4 py-2 text-xs font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 transition-all';
+      }
+      renderTable();
+    }
+
+    function filterServices() {
+      renderTable();
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('toastMsg');
+      toast.innerText = text;
+      toast.style.opacity = '1';
+      setTimeout(() => { toast.style.opacity = '0'; }, 2600);
+    }
+
+    function toggleServiceAction(id, action) {
+      const target = services.find(s => s.id === id);
+      if (!target) return;
+      const t = i18nData[currentLang];
+      const timestamp = new Date().toLocaleTimeString();
+
+      if (action === 'stop') {
+        target.active = false;
+        target.logs.push(`[${timestamp}] systemd[1]: Stopped ${target.name}.`);
+        showToast(`${t.msgStopped}: ${target.name}`);
+      } else if (action === 'start') {
+        target.active = true;
+        target.logs.push(`[${timestamp}] systemd[1]: Started ${target.name}.`);
+        showToast(`${t.msgStarted}: ${target.name}`);
+      } else if (action === 'restart') {
+        target.active = true;
+        target.logs.push(`[${timestamp}] systemd[1]: Stopping ${target.name}...`);
+        target.logs.push(`[${timestamp}] systemd[1]: Started ${target.name}.`);
+        showToast(`${t.msgRestarted}: ${target.name}`);
+      }
+      renderTable();
+    }
+
+    function toggleAutoStart(id) {
+      const target = services.find(s => s.id === id);
+      if (!target) return;
+      const t = i18nData[currentLang];
+      target.enabled = !target.enabled;
+      const stateMsg = target.enabled ? t.msgEnabled : t.msgDisabled;
+      showToast(`${target.name} ${stateMsg}.`);
+      renderTable();
+    }
+
+    function deleteCustomService(id) {
+      const t = i18nData[currentLang];
+      if (confirm(t.confirmDelete)) {
+        services = services.filter(s => s.id !== id);
+        showToast(t.msgDeleted);
+        renderTable();
+      }
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    function switchModalTab(tab) {
+      const formTab = document.getElementById('modalTab-form');
+      const rawTab = document.getElementById('modalTab-raw');
+      const quickForm = document.getElementById('quickForm');
+      const rawUnitForm = document.getElementById('rawUnitForm');
+
+      if (tab === 'form') {
+        formTab.className = 'pb-2 border-b-2 border-brand-500 font-semibold text-brand-500';
+        rawTab.className = 'pb-2 border-b-2 border-transparent font-semibold text-slate-400 hover:text-white';
+        quickForm.classList.remove('hidden');
+        rawUnitForm.classList.add('hidden');
+      } else {
+        rawTab.className = 'pb-2 border-b-2 border-brand-500 font-semibold text-brand-500';
+        formTab.className = 'pb-2 border-b-2 border-transparent font-semibold text-slate-400 hover:text-white';
+        rawUnitForm.classList.remove('hidden');
+        quickForm.classList.add('hidden');
+      }
+    }
+
+    function handleCreateService(e) {
+      e.preventDefault();
+      const t = i18nData[currentLang];
+      let name = document.getElementById('form-name').value.trim();
+      if (!name.endsWith('.service')) name += '.service';
+      const desc = document.getElementById('form-desc').value.trim() || 'Custom service';
+
+      const newService = {
+        id: 'custom-' + Date.now(),
+        name: name,
+        desc: { vi: desc, en: desc },
+        type: 'custom',
+        active: true,
+        enabled: true,
+        logs: [
+          `systemd[1]: Created symlink /etc/systemd/system/multi-user.target.wants/${name}.`,
+          `systemd[1]: Started ${name}.`
+        ]
+      };
+
+      services.unshift(newService);
+      closeModal('addServiceModal');
+      switchTab('custom');
+      showToast(`${t.msgCreated}: ${name}`);
+      document.getElementById('quickForm').reset();
+    }
+
+    function handleCreateRawService() {
+      const t = i18nData[currentLang];
+      let name = document.getElementById('raw-name').value.trim() || 'raw-custom.service';
+      if (!name.endsWith('.service')) name += '.service';
+
+      const newService = {
+        id: 'custom-' + Date.now(),
+        name: name,
+        desc: { vi: 'Custom Raw Unit', en: 'Custom Raw Unit' },
+        type: 'custom',
+        active: true,
+        enabled: true,
+        logs: [
+          `systemd[1]: Reloaded daemon configuration.`,
+          `systemd[1]: Started ${name}.`
+        ]
+      };
+
+      services.unshift(newService);
+      closeModal('addServiceModal');
+      switchTab('custom');
+      showToast(`${t.msgCreated}: ${name}`);
+    }
+
+    function openLogsModal(id) {
+      viewingServiceId = id;
+      const target = services.find(s => s.id === id);
+      if (!target) return;
+
+      document.getElementById('logServiceName').innerText = target.name;
+      renderLogConsole(target.logs);
+      openModal('logModal');
+    }
+
+    function renderLogConsole(logs) {
+      const consoleEl = document.getElementById('logConsole');
+      consoleEl.innerHTML = '';
+      logs.forEach(line => {
+        const div = document.createElement('div');
+        div.className = line.includes('error') || line.includes('Stopping') ? 'text-rose-400' : 'text-slate-300';
+        div.innerHTML = `<span class="text-slate-600 mr-2">${new Date().toISOString().slice(0,10)}</span> ${line}`;
+        consoleEl.appendChild(div);
+      });
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+
+    function refreshCurrentLogs() {
+      const target = services.find(s => s.id === viewingServiceId);
+      if (!target) return;
+      const time = new Date().toLocaleTimeString();
+      target.logs.push(`[${time}] worker[${Math.floor(Math.random()*9000)+1000}]: Heartbeat OK. Memory usage normal.`);
+      renderLogConsole(target.logs);
+      showToast(currentLang === 'vi' ? 'Đã làm mới logs!' : 'Logs refreshed!');
+    }
+
+    function resetDemoData() {
+      services = JSON.parse(JSON.stringify(initialServices));
+      renderTable();
+      showToast(currentLang === 'vi' ? 'Đã khôi phục dữ liệu ban đầu.' : 'Restored initial demo data.');
+    }
+
+    function copySnippet(elementId) {
+      const text = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(currentLang === 'vi' ? 'Đã sao chép vào clipboard!' : 'Copied to clipboard!');
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setLanguage('vi');
+    });
+  </script>
+</body>
+</html>
