@@ -4,6 +4,14 @@ Plugin tiện ích dành riêng cho **aaPanel** giúp quản lý toàn diện c�
 
 [English](README.md) | [Tiếng Việt](README_VI.md)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![aaPanel](https://img.shields.io/badge/aaPanel-Plugin-20a53a.svg?logo=linux&logoColor=white)](https://www.aapanel.com/)
+[![Trải nghiệm Demo](https://img.shields.io/badge/Dùng_Thử_Demo-Trực_Tuyến-0284c7?style=flat&logo=firefox)](https://huynhngoanhthai.github.io/Systemd-Service-Manager-1.0/)
+[![GitHub stars](https://img.shields.io/github/stars/huynhngoanhthai/Systemd-Service-Manager-1.0?style=social)](https://github.com/huynhngoanhthai/Systemd-Service-Manager-1.0)
+
+> 🌐 **Trải nghiệm Demo Trực Tuyến:** **[https://huynhngoanhthai.github.io/Systemd-Service-Manager-1.0/](https://huynhngoanhthai.github.io/Systemd-Service-Manager-1.0/)**  
+> *Dùng thử giao diện tương tác trực tiếp ngay trên trình duyệt mà không cần cài đặt lên máy chủ!*
+
 ---
 
 ## 📸 Giao diện ứng dụng (Screenshots)

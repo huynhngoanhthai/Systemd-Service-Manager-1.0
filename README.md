@@ -4,6 +4,14 @@ An intuitive aaPanel plugin for managing `systemd` services on Linux servers dir
 
 [English](README.md) | [Tiếng Việt](README_VI.md)
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![aaPanel](https://img.shields.io/badge/aaPanel-Plugin-20a53a.svg?logo=linux&logoColor=white)](https://www.aapanel.com/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Try_Online-0284c7?style=flat&logo=firefox)](https://huynhngoanhthai.github.io/Systemd-Service-Manager-1.0/)
+[![GitHub stars](https://img.shields.io/github/stars/huynhngoanhthai/Systemd-Service-Manager-1.0?style=social)](https://github.com/huynhngoanhthai/Systemd-Service-Manager-1.0)
+
+> 🌐 **Interactive Live Demo:** **[https://huynhngoanhthai.github.io/Systemd-Service-Manager-1.0/](https://huynhngoanhthai.github.io/Systemd-Service-Manager-1.0/)**  
+> *Try the interactive simulator directly in your browser before installing on your server!*
+
 ---
 
 ## 📸 Screenshots
