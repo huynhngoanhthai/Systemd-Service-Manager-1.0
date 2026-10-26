@@ -170,6 +170,16 @@ sudo rm -rf /www/server/panel/plugin/service_manager
 - Việc dừng hoặc thay đổi cấu hình các service quan trọng của hệ thống (như `network`, `sshd`, `mysql`, `nginx`,...) có thể làm mất kết nối hoặc ảnh hưởng đến sự ổn định của máy chủ. Hãy cẩn trọng trước khi thực hiện.
 - Thao tác **Delete** đối với Custom Service sẽ lập tức dừng dịch vụ, tắt tự khởi động và xóa vĩnh viễn file `.service` khỏi `/etc/systemd/system/`. Thao tác này không thể hoàn tác từ plugin.
 
+## ⭐ Lịch sử Star (Star History)
+
+<a href="https://star-history.com/#huynhngoanhthai/Systemd-Service-Manager-1.0&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=Date" />
+ </picture>
+</a>
+
 ---
 
 ## 📄 Giấy phép

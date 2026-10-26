@@ -170,6 +170,16 @@ sudo rm -rf /www/server/panel/plugin/service_manager
 - Restarting or stopping essential system services (e.g., `network`, `sshd`, `mysql`, `nginx`) can disrupt active connections or server availability. Exercise caution when performing actions on system-critical units.
 - Clicking **Delete** on a Custom Service immediately stops the service, disables boot auto-start, and permanently removes its unit file from `/etc/systemd/system/`. This action cannot be reversed from the plugin.
 
+## ⭐ Star History
+
+<a href="https://star-history.com/#huynhngoanhthai/Systemd-Service-Manager-1.0&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=Date" />
+ </picture>
+</a>
+
 ---
 
 ## 📄 License
