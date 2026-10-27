@@ -172,11 +172,11 @@ sudo rm -rf /www/server/panel/plugin/service_manager
 
 ## ⭐ Star History
 
-<a href="https://star-history.com/#huynhngoanhthai/Systemd-Service-Manager-1.0&Date">
+<a href="https://www.star-history.com/?type=date&repos=huynhngoanhthai%2FSystemd-Service-Manager-1.0">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=huynhngoanhthai/Systemd-Service-Manager-1.0&type=date&legend=top-left" />
  </picture>
 </a>
 
