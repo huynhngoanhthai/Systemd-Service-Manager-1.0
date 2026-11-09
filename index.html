@@ -38,23 +38,17 @@
 }
 
 /* aaPanel Dark Theme Active Selectors (Applied ONLY when aaPanel is in dark mode or user forces dark) */
-html[data-theme="dark"] #sm_container,
-body[data-theme="dark"] #sm_container,
-[data-theme="dark"] #sm_container,
-body.dark #sm_container,
-body.theme-dark #sm_container,
-body.bt-dark #sm_container,
-.layui-layer-theme-dark #sm_container,
+html[data-theme="dark"],
+body[data-theme="dark"],
+[data-theme="dark"],
+body.dark,
+body.theme-dark,
+body.bt-dark,
+.layui-layer-theme-dark,
 #sm_container.sm-dark,
-html[data-theme="dark"] .sm-modal-body,
-body[data-theme="dark"] .sm-modal-body,
-[data-theme="dark"] .sm-modal-body,
-body.dark .sm-modal-body,
-body.theme-dark .sm-modal-body,
-body.bt-dark .sm-modal-body,
-.sm-modal-body.sm-dark,
+.sm-layer-dark,
 .sm-modal-dark,
-.sm-layer-dark .sm-modal-body {
+.sm-modal-body.sm-dark {
     --sm-bg: #202020;
     --sm-bg-container: #202020;
     --sm-bg-subtle: #282828;
@@ -87,6 +81,26 @@ body.bt-dark .sm-modal-body,
     --sm-terminal-bg: #141414;
     --sm-terminal-text: #d4d4d4;
     --sm-terminal-border: #2e2e2e;
+}
+
+/* Dark Mode Scrollbars */
+.sm-dark ::-webkit-scrollbar,
+.sm-layer-dark ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.sm-dark ::-webkit-scrollbar-track,
+.sm-layer-dark ::-webkit-scrollbar-track {
+    background: #202020;
+}
+.sm-dark ::-webkit-scrollbar-thumb,
+.sm-layer-dark ::-webkit-scrollbar-thumb {
+    background: #444444;
+    border-radius: 3px;
+}
+.sm-dark ::-webkit-scrollbar-thumb:hover,
+.sm-layer-dark ::-webkit-scrollbar-thumb:hover {
+    background: #555555;
 }
 
 /* Service Manager Clean UI - aaPanel Style */
@@ -410,41 +424,50 @@ body.bt-dark .sm-modal-body,
 }
 
 /* Layui Layer Dark Theme Adaptation (Active ONLY in Dark mode) */
+.sm-layer-dark.layui-layer,
+.sm-layer-dark,
 [data-theme="dark"] .layui-layer,
 body.dark .layui-layer,
 body.theme-dark .layui-layer,
-body.bt-dark .layui-layer,
-.sm-layer-dark.layui-layer {
-    background-color: var(--sm-bg-container) !important;
-    border: 1px solid var(--sm-border) !important;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6) !important;
+body.bt-dark .layui-layer {
+    background-color: #202020 !important;
+    background: #202020 !important;
+    border: 1px solid #383838 !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7) !important;
 }
+.sm-layer-dark .layui-layer-title,
+.sm-layer-dark.layui-layer .layui-layer-title,
 [data-theme="dark"] .layui-layer-title,
 body.dark .layui-layer-title,
 body.theme-dark .layui-layer-title,
-body.bt-dark .layui-layer-title,
-.sm-layer-dark .layui-layer-title,
-.sm-layer-dark.layui-layer .layui-layer-title {
-    background-color: var(--sm-bg-subtle) !important;
-    color: var(--sm-text-title) !important;
-    border-bottom: 1px solid var(--sm-border) !important;
+body.bt-dark .layui-layer-title {
+    background-color: #282828 !important;
+    background: #282828 !important;
+    color: #f0f0f0 !important;
+    border-bottom: 1px solid #383838 !important;
 }
+.sm-layer-dark .layui-layer-content,
+.sm-layer-dark.layui-layer .layui-layer-content,
 [data-theme="dark"] .layui-layer-content,
 body.dark .layui-layer-content,
 body.theme-dark .layui-layer-content,
-body.bt-dark .layui-layer-content,
-.sm-layer-dark .layui-layer-content,
-.sm-layer-dark.layui-layer .layui-layer-content {
-    background-color: var(--sm-bg-container) !important;
-    color: var(--sm-text-primary) !important;
+body.bt-dark .layui-layer-content {
+    background-color: #202020 !important;
+    background: #202020 !important;
+    color: #e0e0e0 !important;
 }
+.sm-layer-dark .layui-layer-close,
+.sm-layer-dark.layui-layer .layui-layer-close,
 [data-theme="dark"] .layui-layer-close,
 body.dark .layui-layer-close,
 body.theme-dark .layui-layer-close,
-body.bt-dark .layui-layer-close,
-.sm-layer-dark .layui-layer-close,
-.sm-layer-dark.layui-layer .layui-layer-close {
-    filter: invert(1) brightness(0.85);
+body.bt-dark .layui-layer-close {
+    filter: invert(1) brightness(0.85) !important;
+}
+.sm-layer-dark .layui-layer-btn,
+.sm-layer-dark.layui-layer .layui-layer-btn {
+    background-color: #282828 !important;
+    border-top: 1px solid #383838 !important;
 }
 [data-theme="dark"] .btn-default,
 body.dark .btn-default,
@@ -510,14 +533,11 @@ body.bt-dark .btn-default:hover,
         </div>
         <div class="sm-toolbar-right">
             <div style="position: relative;">
-                <input type="text" id="sm_search_box" class="sm-input" placeholder="Search service name..." style="width: 170px;" onkeyup="if(event.keyCode==13) smApp.doSearch();" />
+                <input type="text" id="sm_search_box" class="sm-input" placeholder="Search service name..." style="width: 200px;" onkeyup="if(event.keyCode==13) smApp.doSearch();" />
             </div>
             <button class="btn btn-default btn-sm" onclick="smApp.doSearch()">Search</button>
             <button class="btn btn-default btn-sm" onclick="smApp.refresh()" title="Refresh data">
                 <span class="glyphicon glyphicon-repeat"></span>
-            </button>
-            <button class="btn btn-default btn-sm" id="sm_theme_btn" onclick="smApp.cycleTheme()" title="Click to cycle theme: Auto (Follow aaPanel) / Light / Dark">
-                <span id="sm_theme_icon" class="glyphicon glyphicon-adjust"></span> <span id="sm_theme_label">Auto</span>
             </button>
         </div>
     </div>
@@ -553,6 +573,7 @@ body.bt-dark .btn-default:hover,
 
 <script>
 (function() {
+    try { localStorage.removeItem('sm_theme_pref'); } catch(e) {}
     // Popup window optimization for aaPanel GUI
     var $layer = $('#sm_container').parents('.layui-layer');
     if ($layer.length) {
@@ -572,14 +593,9 @@ body.bt-dark .btn-default:hover,
         keyword: '',
         page: 1,
         limit: 50,
-        themePref: localStorage.getItem('sm_theme_pref') || 'auto',
 
         detectAaPanelTheme: function() {
-            // 1. Explicit user override
-            if (this.themePref === 'dark') return 'dark';
-            if (this.themePref === 'light') return 'light';
-
-            // 2. Check aaPanel theme attribute on <html> or <body>
+            // 1. Check aaPanel theme attribute on <html> or <body>
             var htmlTheme = ($('html').attr('data-theme') || '').toLowerCase();
             var bodyTheme = ($('body').attr('data-theme') || '').toLowerCase();
             if (htmlTheme === 'dark' || bodyTheme === 'dark' || htmlTheme.indexOf('dark') !== -1 || bodyTheme.indexOf('dark') !== -1) {
@@ -589,21 +605,21 @@ body.bt-dark .btn-default:hover,
                 return 'light';
             }
 
-            // 3. Check aaPanel classes
+            // 2. Check aaPanel classes
             if ($('html').hasClass('dark') || $('body').hasClass('dark') ||
                 $('body').hasClass('theme-dark') || $('body').hasClass('bt-dark') ||
                 $('body').hasClass('dark-theme')) {
                 return 'dark';
             }
 
-            // 4. Check aaPanel localStorage / cookies
+            // 3. Check aaPanel localStorage / cookies
             try {
                 var lsTheme = (localStorage.getItem('aapanel_theme') || localStorage.getItem('theme') || localStorage.getItem('bt_theme') || '').toLowerCase();
                 if (lsTheme === 'dark' || lsTheme === 'dark-theme') return 'dark';
                 if (lsTheme === 'light' || lsTheme === 'light-theme') return 'light';
             } catch(e) {}
 
-            // 5. Inspect computed background color of aaPanel's main elements
+            // 4. Inspect computed background color of aaPanel's main elements
             try {
                 var targets = [
                     $('.main-content'),
@@ -637,27 +653,41 @@ body.bt-dark .btn-default:hover,
             return 'light';
         },
 
-        cycleTheme: function() {
-            var modes = ['auto', 'light', 'dark'];
-            var currentIdx = modes.indexOf(this.themePref);
-            var nextMode = modes[(currentIdx + 1) % modes.length];
-            this.themePref = nextMode;
-            localStorage.setItem('sm_theme_pref', nextMode);
-            this.syncTheme();
-
-            var label = nextMode === 'auto' ? 'Auto (Follow aaPanel)' : (nextMode === 'light' ? 'Light Mode' : 'Dark Mode');
-            layer.msg('Theme: ' + label, { icon: 1, time: 800 });
-        },
-
         applyModalTheme: function($l) {
             if (!$l || !$l.length) return;
             var isDark = (this.detectAaPanelTheme() === 'dark');
             if (isDark) {
                 $l.addClass('sm-layer-dark');
+                $l.css({
+                    'background-color': '#202020',
+                    'border': '1px solid #383838'
+                });
                 $l.find('.sm-modal-body').addClass('sm-dark');
+                $l.find('.layui-layer-title').css({
+                    'background-color': '#282828',
+                    'background': '#282828',
+                    'color': '#f0f0f0',
+                    'border-bottom': '1px solid #383838'
+                });
+                $l.find('.layui-layer-close').css({
+                    'filter': 'invert(1) brightness(0.85)'
+                });
             } else {
                 $l.removeClass('sm-layer-dark');
+                $l.css({
+                    'background-color': '',
+                    'border': ''
+                });
                 $l.find('.sm-modal-body').removeClass('sm-dark');
+                $l.find('.layui-layer-title').css({
+                    'background-color': '',
+                    'background': '',
+                    'color': '',
+                    'border-bottom': ''
+                });
+                $l.find('.layui-layer-close').css({
+                    'filter': ''
+                });
             }
         },
 
@@ -665,32 +695,68 @@ body.bt-dark .btn-default:hover,
             var currentTheme = this.detectAaPanelTheme();
             var isDark = (currentTheme === 'dark');
             var $c = $('#sm_container');
+            var $parentLayer = $c.parents('.layui-layer');
 
             if (isDark) {
                 $c.addClass('sm-dark');
-                $c.parents('.layui-layer').addClass('sm-layer-dark');
-                $('.layui-layer:has(.sm-modal-body)').addClass('sm-layer-dark');
+                $parentLayer.addClass('sm-layer-dark');
+                $parentLayer.css({
+                    'background-color': '#202020',
+                    'border': '1px solid #383838'
+                });
+                $parentLayer.find('.layui-layer-title').css({
+                    'background-color': '#282828',
+                    'background': '#282828',
+                    'color': '#f0f0f0',
+                    'border-bottom': '1px solid #383838'
+                });
+                $parentLayer.find('.layui-layer-close').css({
+                    'filter': 'invert(1) brightness(0.85)'
+                });
+                $('.layui-layer:has(.sm-modal-body)').addClass('sm-layer-dark').css({
+                    'background-color': '#202020',
+                    'border': '1px solid #383838'
+                });
+                $('.layui-layer:has(.sm-modal-body) .layui-layer-title').css({
+                    'background-color': '#282828',
+                    'background': '#282828',
+                    'color': '#f0f0f0',
+                    'border-bottom': '1px solid #383838'
+                });
+                $('.layui-layer:has(.sm-modal-body) .layui-layer-close').css({
+                    'filter': 'invert(1) brightness(0.85)'
+                });
                 $('.sm-modal-body').addClass('sm-dark');
             } else {
                 $c.removeClass('sm-dark');
-                $c.parents('.layui-layer').removeClass('sm-layer-dark');
-                $('.layui-layer:has(.sm-modal-body)').removeClass('sm-layer-dark');
+                $parentLayer.removeClass('sm-layer-dark');
+                $parentLayer.css({
+                    'background-color': '',
+                    'border': ''
+                });
+                $parentLayer.find('.layui-layer-title').css({
+                    'background-color': '',
+                    'background': '',
+                    'color': '',
+                    'border-bottom': ''
+                });
+                $parentLayer.find('.layui-layer-close').css({
+                    'filter': ''
+                });
+                $('.layui-layer:has(.sm-modal-body)').removeClass('sm-layer-dark').css({
+                    'background-color': '',
+                    'border': ''
+                });
+                $('.layui-layer:has(.sm-modal-body) .layui-layer-title').css({
+                    'background-color': '',
+                    'background': '',
+                    'color': '',
+                    'border-bottom': ''
+                });
+                $('.layui-layer:has(.sm-modal-body) .layui-layer-close').css({
+                    'filter': ''
+                });
                 $('.sm-modal-body').removeClass('sm-dark');
-            }
-
-            var $btnText = $('#sm_theme_label');
-            var $btnIcon = $('#sm_theme_icon');
-            if ($btnText.length) {
-                if (this.themePref === 'auto') {
-                    $btnText.text('Auto (' + (isDark ? 'Dark' : 'Light') + ')');
-                    $btnIcon.attr('class', 'glyphicon glyphicon-adjust');
-                } else if (this.themePref === 'light') {
-                    $btnText.text('Light');
-                    $btnIcon.attr('class', 'glyphicon glyphicon-sun');
-                } else {
-                    $btnText.text('Dark');
-                    $btnIcon.attr('class', 'glyphicon glyphicon-moon');
-                }
             }
         },
 
