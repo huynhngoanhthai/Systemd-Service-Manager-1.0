@@ -37,18 +37,25 @@
     --sm-terminal-border: #333333;
 }
 
-/* aaPanel Dark Theme Active Selectors */
-html[data-theme="dark"],
-body[data-theme="dark"],
-[data-theme="dark"],
-body.dark,
-body.theme-dark,
-body.bt-dark,
-.layui-layer-theme-dark,
+/* aaPanel Dark Theme Active Selectors (Applied ONLY when aaPanel is in dark mode or user forces dark) */
+html[data-theme="dark"] #sm_container,
+body[data-theme="dark"] #sm_container,
+[data-theme="dark"] #sm_container,
+body.dark #sm_container,
+body.theme-dark #sm_container,
+body.bt-dark #sm_container,
+.layui-layer-theme-dark #sm_container,
 #sm_container.sm-dark,
+html[data-theme="dark"] .sm-modal-body,
+body[data-theme="dark"] .sm-modal-body,
+[data-theme="dark"] .sm-modal-body,
+body.dark .sm-modal-body,
+body.theme-dark .sm-modal-body,
+body.bt-dark .sm-modal-body,
+.sm-modal-body.sm-dark,
 .sm-modal-dark,
-.sm-layer-dark {
-    --sm-bg: var(--layui-layer-bg, #202020);
+.sm-layer-dark .sm-modal-body {
+    --sm-bg: #202020;
     --sm-bg-container: #202020;
     --sm-bg-subtle: #282828;
     --sm-bg-hover: #2b332c;
@@ -80,44 +87,6 @@ body.bt-dark,
     --sm-terminal-bg: #141414;
     --sm-terminal-text: #d4d4d4;
     --sm-terminal-border: #2e2e2e;
-}
-
-@media (prefers-color-scheme: dark) {
-    html:not([data-theme="light"]):not(.light) #sm_container,
-    body:not([data-theme="light"]):not(.light) #sm_container,
-    html:not([data-theme="light"]):not(.light) .sm-modal-body,
-    body:not([data-theme="light"]):not(.light) .sm-modal-body {
-        --sm-bg: var(--layui-layer-bg, #202020);
-        --sm-bg-container: #202020;
-        --sm-bg-subtle: #282828;
-        --sm-bg-hover: #2b332c;
-        --sm-bg-card: #252525;
-        --sm-border: #383838;
-        --sm-border-subtle: #2f2f2f;
-        --sm-border-nav: #3a3a3a;
-        --sm-text-primary: #e0e0e0;
-        --sm-text-title: #f0f0f0;
-        --sm-text-secondary: #b3b3b3;
-        --sm-text-muted: #8c8c8c;
-        --sm-text-hint: #707070;
-        --sm-input-bg: #2b2b2b;
-        --sm-input-border: #444444;
-        --sm-input-text: #f0f0f0;
-        --sm-badge-bg: #323232;
-        --sm-badge-text: #aaaaaa;
-        --sm-tag-custom-bg: #142838;
-        --sm-tag-custom-text: #40a9ff;
-        --sm-tag-custom-border: #1a4263;
-        --sm-tag-boot-on-bg: #162e1e;
-        --sm-tag-boot-on-text: #49cc6b;
-        --sm-tag-boot-on-border: #235933;
-        --sm-tag-boot-off-bg: #2a2a2a;
-        --sm-tag-boot-off-text: #8c8c8c;
-        --sm-tag-boot-off-border: #3f3f3f;
-        --sm-terminal-bg: #141414;
-        --sm-terminal-text: #d4d4d4;
-        --sm-terminal-border: #2e2e2e;
-    }
 }
 
 /* Service Manager Clean UI - aaPanel Style */
@@ -440,7 +409,7 @@ body.bt-dark,
     line-height: 1.5;
 }
 
-/* Layui Layer Dark Theme Adaptation */
+/* Layui Layer Dark Theme Adaptation (Active ONLY in Dark mode) */
 [data-theme="dark"] .layui-layer,
 body.dark .layui-layer,
 body.theme-dark .layui-layer,
@@ -454,7 +423,8 @@ body.bt-dark .layui-layer,
 body.dark .layui-layer-title,
 body.theme-dark .layui-layer-title,
 body.bt-dark .layui-layer-title,
-.sm-layer-dark .layui-layer-title {
+.sm-layer-dark .layui-layer-title,
+.sm-layer-dark.layui-layer .layui-layer-title {
     background-color: var(--sm-bg-subtle) !important;
     color: var(--sm-text-title) !important;
     border-bottom: 1px solid var(--sm-border) !important;
@@ -463,7 +433,8 @@ body.bt-dark .layui-layer-title,
 body.dark .layui-layer-content,
 body.theme-dark .layui-layer-content,
 body.bt-dark .layui-layer-content,
-.sm-layer-dark .layui-layer-content {
+.sm-layer-dark .layui-layer-content,
+.sm-layer-dark.layui-layer .layui-layer-content {
     background-color: var(--sm-bg-container) !important;
     color: var(--sm-text-primary) !important;
 }
@@ -471,7 +442,8 @@ body.bt-dark .layui-layer-content,
 body.dark .layui-layer-close,
 body.theme-dark .layui-layer-close,
 body.bt-dark .layui-layer-close,
-.sm-layer-dark .layui-layer-close {
+.sm-layer-dark .layui-layer-close,
+.sm-layer-dark.layui-layer .layui-layer-close {
     filter: invert(1) brightness(0.85);
 }
 [data-theme="dark"] .btn-default,
@@ -480,7 +452,8 @@ body.theme-dark .btn-default,
 body.bt-dark .btn-default,
 #sm_container.sm-dark .btn-default,
 .sm-modal-dark .btn-default,
-.sm-layer-dark .btn-default {
+.sm-layer-dark .btn-default,
+.sm-layer-dark.layui-layer .btn-default {
     background-color: #2b2b2b !important;
     border-color: #444444 !important;
     color: #e0e0e0 !important;
@@ -491,7 +464,8 @@ body.theme-dark .btn-default:hover,
 body.bt-dark .btn-default:hover,
 #sm_container.sm-dark .btn-default:hover,
 .sm-modal-dark .btn-default:hover,
-.sm-layer-dark .btn-default:hover {
+.sm-layer-dark .btn-default:hover,
+.sm-layer-dark.layui-layer .btn-default:hover {
     background-color: #383838 !important;
     border-color: #555555 !important;
     color: #ffffff !important;
@@ -536,11 +510,14 @@ body.bt-dark .btn-default:hover,
         </div>
         <div class="sm-toolbar-right">
             <div style="position: relative;">
-                <input type="text" id="sm_search_box" class="sm-input" placeholder="Search service name..." style="width: 200px;" onkeyup="if(event.keyCode==13) smApp.doSearch();" />
+                <input type="text" id="sm_search_box" class="sm-input" placeholder="Search service name..." style="width: 170px;" onkeyup="if(event.keyCode==13) smApp.doSearch();" />
             </div>
             <button class="btn btn-default btn-sm" onclick="smApp.doSearch()">Search</button>
             <button class="btn btn-default btn-sm" onclick="smApp.refresh()" title="Refresh data">
                 <span class="glyphicon glyphicon-repeat"></span>
+            </button>
+            <button class="btn btn-default btn-sm" id="sm_theme_btn" onclick="smApp.cycleTheme()" title="Click to cycle theme: Auto (Follow aaPanel) / Light / Dark">
+                <span id="sm_theme_icon" class="glyphicon glyphicon-adjust"></span> <span id="sm_theme_label">Auto</span>
             </button>
         </div>
     </div>
@@ -595,39 +572,86 @@ body.bt-dark .btn-default:hover,
         keyword: '',
         page: 1,
         limit: 50,
+        themePref: localStorage.getItem('sm_theme_pref') || 'auto',
 
-        detectTheme: function() {
-            var htmlTheme = $('html').attr('data-theme');
-            var bodyTheme = $('body').attr('data-theme');
-            if (htmlTheme === 'dark' || bodyTheme === 'dark') return 'dark';
-            if (htmlTheme === 'light' || bodyTheme === 'light') return 'light';
+        detectAaPanelTheme: function() {
+            // 1. Explicit user override
+            if (this.themePref === 'dark') return 'dark';
+            if (this.themePref === 'light') return 'light';
 
+            // 2. Check aaPanel theme attribute on <html> or <body>
+            var htmlTheme = ($('html').attr('data-theme') || '').toLowerCase();
+            var bodyTheme = ($('body').attr('data-theme') || '').toLowerCase();
+            if (htmlTheme === 'dark' || bodyTheme === 'dark' || htmlTheme.indexOf('dark') !== -1 || bodyTheme.indexOf('dark') !== -1) {
+                return 'dark';
+            }
+            if (htmlTheme === 'light' || bodyTheme === 'light' || htmlTheme.indexOf('light') !== -1 || bodyTheme.indexOf('light') !== -1) {
+                return 'light';
+            }
+
+            // 3. Check aaPanel classes
             if ($('html').hasClass('dark') || $('body').hasClass('dark') ||
-                $('body').hasClass('theme-dark') || $('body').hasClass('bt-dark')) {
+                $('body').hasClass('theme-dark') || $('body').hasClass('bt-dark') ||
+                $('body').hasClass('dark-theme')) {
                 return 'dark';
             }
 
+            // 4. Check aaPanel localStorage / cookies
             try {
-                var bg = $('body').css('background-color');
-                if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
-                    var rgb = bg.match(/\d+/g);
-                    if (rgb && rgb.length >= 3) {
-                        var brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
-                        if (brightness < 128) return 'dark';
+                var lsTheme = (localStorage.getItem('aapanel_theme') || localStorage.getItem('theme') || localStorage.getItem('bt_theme') || '').toLowerCase();
+                if (lsTheme === 'dark' || lsTheme === 'dark-theme') return 'dark';
+                if (lsTheme === 'light' || lsTheme === 'light-theme') return 'light';
+            } catch(e) {}
+
+            // 5. Inspect computed background color of aaPanel's main elements
+            try {
+                var targets = [
+                    $('.main-content'),
+                    $('#main-content'),
+                    $('.warpper'),
+                    $('.container-fluid'),
+                    $('body'),
+                    $('.sidebar'),
+                    $('#sidebar')
+                ];
+                for (var i = 0; i < targets.length; i++) {
+                    var $el = targets[i];
+                    if ($el && $el.length) {
+                        var bg = $el.css('background-color');
+                        if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
+                            var rgb = bg.match(/\d+/g);
+                            if (rgb && rgb.length >= 3) {
+                                var brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
+                                if (brightness < 100) {
+                                    return 'dark';
+                                } else if (brightness > 140) {
+                                    return 'light';
+                                }
+                            }
+                        }
                     }
                 }
             } catch(e) {}
 
-            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                return 'dark';
-            }
-
+            // aaPanel default is always Light mode
             return 'light';
+        },
+
+        cycleTheme: function() {
+            var modes = ['auto', 'light', 'dark'];
+            var currentIdx = modes.indexOf(this.themePref);
+            var nextMode = modes[(currentIdx + 1) % modes.length];
+            this.themePref = nextMode;
+            localStorage.setItem('sm_theme_pref', nextMode);
+            this.syncTheme();
+
+            var label = nextMode === 'auto' ? 'Auto (Follow aaPanel)' : (nextMode === 'light' ? 'Light Mode' : 'Dark Mode');
+            layer.msg('Theme: ' + label, { icon: 1, time: 800 });
         },
 
         applyModalTheme: function($l) {
             if (!$l || !$l.length) return;
-            var isDark = (this.detectTheme() === 'dark');
+            var isDark = (this.detectAaPanelTheme() === 'dark');
             if (isDark) {
                 $l.addClass('sm-layer-dark');
                 $l.find('.sm-modal-body').addClass('sm-dark');
@@ -638,8 +662,10 @@ body.bt-dark .btn-default:hover,
         },
 
         syncTheme: function() {
-            var isDark = (this.detectTheme() === 'dark');
+            var currentTheme = this.detectAaPanelTheme();
+            var isDark = (currentTheme === 'dark');
             var $c = $('#sm_container');
+
             if (isDark) {
                 $c.addClass('sm-dark');
                 $c.parents('.layui-layer').addClass('sm-layer-dark');
@@ -650,6 +676,21 @@ body.bt-dark .btn-default:hover,
                 $c.parents('.layui-layer').removeClass('sm-layer-dark');
                 $('.layui-layer:has(.sm-modal-body)').removeClass('sm-layer-dark');
                 $('.sm-modal-body').removeClass('sm-dark');
+            }
+
+            var $btnText = $('#sm_theme_label');
+            var $btnIcon = $('#sm_theme_icon');
+            if ($btnText.length) {
+                if (this.themePref === 'auto') {
+                    $btnText.text('Auto (' + (isDark ? 'Dark' : 'Light') + ')');
+                    $btnIcon.attr('class', 'glyphicon glyphicon-adjust');
+                } else if (this.themePref === 'light') {
+                    $btnText.text('Light');
+                    $btnIcon.attr('class', 'glyphicon glyphicon-sun');
+                } else {
+                    $btnText.text('Dark');
+                    $btnIcon.attr('class', 'glyphicon glyphicon-moon');
+                }
             }
         },
 
@@ -665,15 +706,6 @@ body.bt-dark .btn-default:hover,
                 }
                 if (document.body) {
                     obs.observe(document.body, { attributes: true, attributeFilter: ['data-theme', 'class', 'style'] });
-                }
-            }
-            if (window.matchMedia) {
-                var mql = window.matchMedia('(prefers-color-scheme: dark)');
-                var handler = function() { self.syncTheme(); };
-                if (mql.addEventListener) {
-                    mql.addEventListener('change', handler);
-                } else if (mql.addListener) {
-                    mql.addListener(handler);
                 }
             }
         },
