@@ -38,6 +38,7 @@ Monitor more than 200+ Linux system services (Docker, Cron, Nginx, SSHD, etc.), 
   - **Raw Unit File:** Full freedom to compose complete `.service` unit files with advanced systemd directives.
 - **Log Inspection & Process Metrics:** View service PID, memory footprint, and recent journal log output fetched directly via `journalctl`.
 - **Safety First:** Automatic `.bak` backups before modifying unit files, and automatic `systemctl daemon-reload` execution after changes.
+- **Native aaPanel Theme Sync:** Seamless real-time adaptation to aaPanel's current theme (Dark Mode, Light Mode, custom palettes, and reactive theme switching without page reloads).
 
 ---
 
@@ -87,6 +88,18 @@ bash /www/server/panel/plugin/service_manager/install.sh install
 ```
 
 *Note: Ensure `wget` and `unzip` are installed on your server (`yum install -y wget unzip` or `apt install -y wget unzip`). After installation, refresh your aaPanel browser tab (`F5`) to access the plugin in the **App Store**.*
+
+---
+
+### 🔄 Updating to Latest Version
+
+If you already have the plugin installed, update to the latest version at any time with:
+
+```bash
+sudo bash /www/server/panel/plugin/service_manager/install.sh update
+```
+
+*(Note: Running `install.sh install` also automatically detects existing installations and updates them to the latest version without overwriting your custom configuration).*
 
 ---
 

@@ -38,6 +38,7 @@ Theo dõi trạng thái của hơn 200+ dịch vụ hệ thống Linux (Docker, 
   - **Raw Unit File:** Tự do soạn thảo file unit `.service` đầy đủ với các tham số chuyên sâu.
 - **Xem Log & Giám sát:** Tra cứu thông tin PID, RAM tiêu thụ và xem nhanh các dòng log mới nhất trích xuất trực tiếp từ `journalctl`.
 - **An toàn & Tiện lợi:** Hỗ trợ tính năng sao lưu file `.bak` khi chỉnh sửa, tự động chạy `systemctl daemon-reload` sau khi thay đổi cấu hình.
+- **Tự động ăn theo Theme aaPanel:** Tương thích hoàn toàn giao diện Light Mode và Dark Mode của aaPanel, tự động lắng nghe và chuyển đổi theme tức thì theo cài đặt của trang mà không cần tải lại trang.
 
 ---
 
@@ -87,6 +88,18 @@ bash /www/server/panel/plugin/service_manager/install.sh install
 ```
 
 *Lưu ý: Máy chủ cần cài sẵn gói `wget` và `unzip` (`yum install -y wget unzip` hoặc `apt install -y wget unzip`). Sau khi cài đặt thành công, nhấn `F5` tải lại trang web aaPanel để thấy icon plugin trong mục **App Store**.*
+
+---
+
+### 🔄 Cập nhật phiên bản mới nhất (Update)
+
+Nếu máy chủ của bạn đã cài đặt plugin từ trước, bạn có thể cập nhật lên phiên bản mới nhất bất kỳ lúc nào bằng lệnh:
+
+```bash
+sudo bash /www/server/panel/plugin/service_manager/install.sh update
+```
+
+*(Lưu ý: Ngay cả khi bạn chạy lại lệnh `install.sh install`, script cài đặt cũng sẽ tự động phát hiện plugin đã tồn tại và tự động chuyển sang chế độ cập nhật bản mới nhất, giữ nguyên an toàn các service hiện tại).*
 
 ---
 

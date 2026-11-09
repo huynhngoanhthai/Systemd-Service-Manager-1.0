@@ -1,11 +1,134 @@
 <style>
+/* ============================================================
+   aaPanel Native Theme Integration (Variables & Theme Adaptation)
+   ============================================================ */
+:root {
+    --sm-bg: var(--layui-layer-bg, #ffffff);
+    --sm-bg-container: #ffffff;
+    --sm-bg-subtle: #f8f9fa;
+    --sm-bg-hover: #f9fbf8;
+    --sm-bg-card: #ffffff;
+    --sm-border: #ebeef5;
+    --sm-border-subtle: #f0f2f5;
+    --sm-border-nav: #edf0f5;
+    --sm-text-primary: #333333;
+    --sm-text-title: #2c3e50;
+    --sm-text-secondary: #666666;
+    --sm-text-muted: #888888;
+    --sm-text-hint: #999999;
+    --sm-input-bg: #ffffff;
+    --sm-input-border: #dcdfe6;
+    --sm-input-text: #333333;
+    --sm-badge-bg: #f0f2f5;
+    --sm-badge-text: #888888;
+    --sm-primary: #20a53a;
+    --sm-primary-hover: #1a822e;
+    --sm-tag-custom-bg: #e8f4ff;
+    --sm-tag-custom-text: #1890ff;
+    --sm-tag-custom-border: #d1e9ff;
+    --sm-tag-boot-on-bg: #f0f9eb;
+    --sm-tag-boot-on-text: #20a53a;
+    --sm-tag-boot-on-border: #e1f3d8;
+    --sm-tag-boot-off-bg: #f4f4f5;
+    --sm-tag-boot-off-text: #909399;
+    --sm-tag-boot-off-border: #e9e9eb;
+    --sm-terminal-bg: #1e1e1e;
+    --sm-terminal-text: #abb2bf;
+    --sm-terminal-border: #333333;
+}
+
+/* aaPanel Dark Theme Active Selectors */
+html[data-theme="dark"],
+body[data-theme="dark"],
+[data-theme="dark"],
+body.dark,
+body.theme-dark,
+body.bt-dark,
+.layui-layer-theme-dark,
+#sm_container.sm-dark,
+.sm-modal-dark,
+.sm-layer-dark {
+    --sm-bg: var(--layui-layer-bg, #202020);
+    --sm-bg-container: #202020;
+    --sm-bg-subtle: #282828;
+    --sm-bg-hover: #2b332c;
+    --sm-bg-card: #252525;
+    --sm-border: #383838;
+    --sm-border-subtle: #2f2f2f;
+    --sm-border-nav: #3a3a3a;
+    --sm-text-primary: #e0e0e0;
+    --sm-text-title: #f0f0f0;
+    --sm-text-secondary: #b3b3b3;
+    --sm-text-muted: #8c8c8c;
+    --sm-text-hint: #707070;
+    --sm-input-bg: #2b2b2b;
+    --sm-input-border: #444444;
+    --sm-input-text: #f0f0f0;
+    --sm-badge-bg: #323232;
+    --sm-badge-text: #aaaaaa;
+    --sm-primary: #20a53a;
+    --sm-primary-hover: #29be46;
+    --sm-tag-custom-bg: #142838;
+    --sm-tag-custom-text: #40a9ff;
+    --sm-tag-custom-border: #1a4263;
+    --sm-tag-boot-on-bg: #162e1e;
+    --sm-tag-boot-on-text: #49cc6b;
+    --sm-tag-boot-on-border: #235933;
+    --sm-tag-boot-off-bg: #2a2a2a;
+    --sm-tag-boot-off-text: #8c8c8c;
+    --sm-tag-boot-off-border: #3f3f3f;
+    --sm-terminal-bg: #141414;
+    --sm-terminal-text: #d4d4d4;
+    --sm-terminal-border: #2e2e2e;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]):not(.light) #sm_container,
+    body:not([data-theme="light"]):not(.light) #sm_container,
+    html:not([data-theme="light"]):not(.light) .sm-modal-body,
+    body:not([data-theme="light"]):not(.light) .sm-modal-body {
+        --sm-bg: var(--layui-layer-bg, #202020);
+        --sm-bg-container: #202020;
+        --sm-bg-subtle: #282828;
+        --sm-bg-hover: #2b332c;
+        --sm-bg-card: #252525;
+        --sm-border: #383838;
+        --sm-border-subtle: #2f2f2f;
+        --sm-border-nav: #3a3a3a;
+        --sm-text-primary: #e0e0e0;
+        --sm-text-title: #f0f0f0;
+        --sm-text-secondary: #b3b3b3;
+        --sm-text-muted: #8c8c8c;
+        --sm-text-hint: #707070;
+        --sm-input-bg: #2b2b2b;
+        --sm-input-border: #444444;
+        --sm-input-text: #f0f0f0;
+        --sm-badge-bg: #323232;
+        --sm-badge-text: #aaaaaa;
+        --sm-tag-custom-bg: #142838;
+        --sm-tag-custom-text: #40a9ff;
+        --sm-tag-custom-border: #1a4263;
+        --sm-tag-boot-on-bg: #162e1e;
+        --sm-tag-boot-on-text: #49cc6b;
+        --sm-tag-boot-on-border: #235933;
+        --sm-tag-boot-off-bg: #2a2a2a;
+        --sm-tag-boot-off-text: #8c8c8c;
+        --sm-tag-boot-off-border: #3f3f3f;
+        --sm-terminal-bg: #141414;
+        --sm-terminal-text: #d4d4d4;
+        --sm-terminal-border: #2e2e2e;
+    }
+}
+
 /* Service Manager Clean UI - aaPanel Style */
 #sm_container {
     padding: 15px 20px 20px;
     font-size: 12px;
-    color: #333;
-    background: #fff;
+    color: var(--sm-text-primary);
+    background: var(--sm-bg-container);
     min-height: 520px;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Top Navigation Tabs */
@@ -13,7 +136,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #edf0f5;
+    border-bottom: 2px solid var(--sm-border-nav);
     padding-bottom: 0;
     margin-bottom: 15px;
 }
@@ -26,19 +149,19 @@
     padding: 8px 4px 10px;
     font-size: 13px;
     font-weight: 500;
-    color: #666;
+    color: var(--sm-text-secondary);
     cursor: pointer;
     border-bottom: 2px solid transparent;
     transition: all 0.2s;
     user-select: none;
 }
 .sm-nav-tab:hover {
-    color: #20a53a;
+    color: var(--sm-primary);
 }
 .sm-nav-tab.active {
-    color: #20a53a;
+    color: var(--sm-primary);
     font-weight: 600;
-    border-bottom: 2px solid #20a53a;
+    border-bottom: 2px solid var(--sm-primary);
 }
 .sm-nav-count {
     display: inline-block;
@@ -46,13 +169,17 @@
     font-size: 11px;
     font-weight: normal;
     border-radius: 10px;
-    background: #f0f2f5;
-    color: #888;
+    background: var(--sm-badge-bg);
+    color: var(--sm-badge-text);
     margin-left: 4px;
 }
 .sm-nav-tab.active .sm-nav-count {
-    background: #e1f3d8;
-    color: #529b2e;
+    background: var(--sm-tag-boot-on-bg);
+    color: var(--sm-tag-boot-on-text);
+}
+.sm-nav-stats {
+    font-size: 12px;
+    color: var(--sm-text-muted);
 }
 
 /* Toolbar & Filters */
@@ -77,35 +204,40 @@
 .sm-input {
     height: 30px;
     padding: 0 10px;
-    border: 1px solid #dcdfe6;
+    border: 1px solid var(--sm-input-border);
+    background: var(--sm-input-bg);
+    color: var(--sm-input-text);
     border-radius: 3px;
     font-size: 12px;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background-color 0.2s, color 0.2s;
 }
 .sm-input:focus {
-    border-color: #20a53a;
+    border-color: var(--sm-primary);
 }
 .sm-select {
     height: 30px;
     padding: 0 8px;
-    border: 1px solid #dcdfe6;
+    border: 1px solid var(--sm-input-border);
     border-radius: 3px;
     font-size: 12px;
-    background: #fff;
+    background: var(--sm-input-bg);
+    color: var(--sm-input-text);
     outline: none;
+    transition: border-color 0.2s, background-color 0.2s, color 0.2s;
 }
 .sm-select:focus {
-    border-color: #20a53a;
+    border-color: var(--sm-primary);
 }
 
 /* Clean Table */
 .sm-table-wrap {
-    border: 1px solid #ebeef5;
+    border: 1px solid var(--sm-border);
     border-radius: 4px;
     overflow: hidden;
     max-height: 410px;
     overflow-y: auto;
+    background: var(--sm-bg-container);
 }
 .sm-table {
     width: 100%;
@@ -115,24 +247,36 @@
 .sm-table thead th {
     position: sticky;
     top: 0;
-    background: #f8f9fa;
-    color: #555;
+    background: var(--sm-bg-subtle);
+    color: var(--sm-text-primary);
     font-weight: 600;
     font-size: 12px;
     padding: 9px 12px;
-    border-bottom: 1px solid #e4e7ed;
+    border-bottom: 1px solid var(--sm-border);
     z-index: 2;
     white-space: nowrap;
 }
 .sm-table tbody td {
     padding: 9px 12px;
-    border-bottom: 1px solid #f0f2f5;
+    border-bottom: 1px solid var(--sm-border-subtle);
     vertical-align: middle;
     font-size: 12px;
-    color: #444;
+    color: var(--sm-text-primary);
+    background: transparent;
 }
-.sm-table tbody tr:hover {
-    background-color: #f9fbf8;
+.sm-table tbody tr:hover td {
+    background-color: var(--sm-bg-hover);
+}
+.sm-service-name {
+    font-weight: 500;
+    color: var(--sm-text-title);
+}
+.sm-service-desc {
+    color: var(--sm-text-muted);
+}
+.sm-empty-text {
+    padding: 35px;
+    color: var(--sm-text-hint);
 }
 
 /* Status Indicators */
@@ -148,8 +292,8 @@
     border-radius: 50%;
     display: inline-block;
 }
-.sm-dot-running { background-color: #20a53a; }
-.sm-dot-stopped { background-color: #c0c4cc; }
+.sm-dot-running { background-color: var(--sm-primary); }
+.sm-dot-stopped { background-color: var(--sm-text-hint); }
 .sm-dot-failed { background-color: #f56c6c; }
 
 .sm-tag-pill {
@@ -159,33 +303,33 @@
     border-radius: 3px;
 }
 .sm-tag-custom {
-    background: #e8f4ff;
-    color: #1890ff;
-    border: 1px solid #d1e9ff;
+    background: var(--sm-tag-custom-bg);
+    color: var(--sm-tag-custom-text);
+    border: 1px solid var(--sm-tag-custom-border);
     margin-right: 5px;
     font-weight: 500;
 }
 .sm-tag-boot-on {
-    color: #20a53a;
-    background: #f0f9eb;
-    border: 1px solid #e1f3d8;
+    color: var(--sm-tag-boot-on-text);
+    background: var(--sm-tag-boot-on-bg);
+    border: 1px solid var(--sm-tag-boot-on-border);
 }
 .sm-tag-boot-off {
-    color: #909399;
-    background: #f4f4f5;
-    border: 1px solid #e9e9eb;
+    color: var(--sm-tag-boot-off-text);
+    background: var(--sm-tag-boot-off-bg);
+    border: 1px solid var(--sm-tag-boot-off-border);
 }
 
 /* Action Links (aaPanel Style) */
 .sm-op-link {
-    color: #20a53a;
+    color: var(--sm-primary);
     cursor: pointer;
     text-decoration: none;
     margin: 0 4px;
 }
 .sm-op-link:hover {
     text-decoration: underline;
-    color: #1a822e;
+    color: var(--sm-primary-hover);
 }
 .sm-op-link.danger {
     color: #f56c6c;
@@ -194,13 +338,13 @@
     color: #cf3d3d;
 }
 .sm-op-link.muted {
-    color: #606266;
+    color: var(--sm-text-secondary);
 }
 .sm-op-link.muted:hover {
-    color: #303133;
+    color: var(--sm-text-primary);
 }
 .sm-op-sep {
-    color: #dcdfe6;
+    color: var(--sm-border);
 }
 
 /* Footer / Pagination */
@@ -210,13 +354,63 @@
     align-items: center;
     padding-top: 12px;
     font-size: 12px;
-    color: #888;
+    color: var(--sm-text-muted);
+}
+.sm-page-text {
+    font-size: 11px;
+    color: var(--sm-text-secondary);
+    margin: 0 4px;
 }
 
 /* Modal Form Styles */
 .sm-modal-body {
     padding: 15px 20px;
     font-size: 12px;
+    background: var(--sm-bg-container);
+    color: var(--sm-text-primary);
+    box-sizing: border-box;
+}
+.sm-detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    background: var(--sm-bg-subtle);
+    border: 1px solid var(--sm-border);
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+.sm-modal-title {
+    font-size: 13px;
+    color: var(--sm-text-title);
+}
+.sm-modal-subtitle {
+    margin-left: 8px;
+    color: var(--sm-text-muted);
+    font-size: 11px;
+}
+.sm-edit-filepath-label {
+    margin-bottom: 8px;
+    color: var(--sm-text-secondary);
+    font-size: 11px;
+}
+.sm-accent-text {
+    color: var(--sm-primary);
+}
+.sm-modal-tab-bar {
+    display: flex;
+    gap: 12px;
+    border-bottom: 1px solid var(--sm-border);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+}
+.sm-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid var(--sm-border);
 }
 .sm-line {
     display: flex;
@@ -225,15 +419,16 @@
 }
 .sm-line-label {
     width: 140px;
-    color: #555;
+    color: var(--sm-text-secondary);
     font-weight: 500;
 }
 .sm-line-content {
     flex: 1;
 }
 .sm-terminal {
-    background: #1e1e1e;
-    color: #d4d4d4;
+    background: var(--sm-terminal-bg);
+    color: var(--sm-terminal-text);
+    border: 1px solid var(--sm-terminal-border);
     padding: 12px;
     font-family: Consolas, Monaco, "Courier New", monospace;
     font-size: 12px;
@@ -243,6 +438,63 @@
     white-space: pre-wrap;
     word-break: break-all;
     line-height: 1.5;
+}
+
+/* Layui Layer Dark Theme Adaptation */
+[data-theme="dark"] .layui-layer,
+body.dark .layui-layer,
+body.theme-dark .layui-layer,
+body.bt-dark .layui-layer,
+.sm-layer-dark.layui-layer {
+    background-color: var(--sm-bg-container) !important;
+    border: 1px solid var(--sm-border) !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6) !important;
+}
+[data-theme="dark"] .layui-layer-title,
+body.dark .layui-layer-title,
+body.theme-dark .layui-layer-title,
+body.bt-dark .layui-layer-title,
+.sm-layer-dark .layui-layer-title {
+    background-color: var(--sm-bg-subtle) !important;
+    color: var(--sm-text-title) !important;
+    border-bottom: 1px solid var(--sm-border) !important;
+}
+[data-theme="dark"] .layui-layer-content,
+body.dark .layui-layer-content,
+body.theme-dark .layui-layer-content,
+body.bt-dark .layui-layer-content,
+.sm-layer-dark .layui-layer-content {
+    background-color: var(--sm-bg-container) !important;
+    color: var(--sm-text-primary) !important;
+}
+[data-theme="dark"] .layui-layer-close,
+body.dark .layui-layer-close,
+body.theme-dark .layui-layer-close,
+body.bt-dark .layui-layer-close,
+.sm-layer-dark .layui-layer-close {
+    filter: invert(1) brightness(0.85);
+}
+[data-theme="dark"] .btn-default,
+body.dark .btn-default,
+body.theme-dark .btn-default,
+body.bt-dark .btn-default,
+#sm_container.sm-dark .btn-default,
+.sm-modal-dark .btn-default,
+.sm-layer-dark .btn-default {
+    background-color: #2b2b2b !important;
+    border-color: #444444 !important;
+    color: #e0e0e0 !important;
+}
+[data-theme="dark"] .btn-default:hover,
+body.dark .btn-default:hover,
+body.theme-dark .btn-default:hover,
+body.bt-dark .btn-default:hover,
+#sm_container.sm-dark .btn-default:hover,
+.sm-modal-dark .btn-default:hover,
+.sm-layer-dark .btn-default:hover {
+    background-color: #383838 !important;
+    border-color: #555555 !important;
+    color: #ffffff !important;
 }
 </style>
 
@@ -259,8 +511,8 @@
                 <span class="sm-nav-count" id="count_all">0</span>
             </div>
         </div>
-        <div style="font-size: 12px; color: #888;">
-            Running: <b style="color: #20a53a;" id="count_running">0</b> | Stopped: <span id="count_stopped">0</span>
+        <div class="sm-nav-stats">
+            Running: <b style="color: var(--sm-primary);" id="count_running">0</b> | Stopped: <span id="count_stopped">0</span>
             <span id="wrap_failed" style="display:none; color: #f56c6c; margin-left: 6px;">| Failed: <b id="count_failed">0</b></span>
         </div>
     </div>
@@ -307,7 +559,7 @@
             </thead>
             <tbody id="sm_tbody">
                 <tr>
-                    <td colspan="5" class="text-center" style="padding: 30px; color: #999;">
+                    <td colspan="5" class="text-center sm-empty-text">
                         <span class="glyphicon glyphicon-refresh" style="animation: spin 1s infinite linear;"></span> Loading service list...
                     </td>
                 </tr>
@@ -343,6 +595,88 @@
         keyword: '',
         page: 1,
         limit: 50,
+
+        detectTheme: function() {
+            var htmlTheme = $('html').attr('data-theme');
+            var bodyTheme = $('body').attr('data-theme');
+            if (htmlTheme === 'dark' || bodyTheme === 'dark') return 'dark';
+            if (htmlTheme === 'light' || bodyTheme === 'light') return 'light';
+
+            if ($('html').hasClass('dark') || $('body').hasClass('dark') ||
+                $('body').hasClass('theme-dark') || $('body').hasClass('bt-dark')) {
+                return 'dark';
+            }
+
+            try {
+                var bg = $('body').css('background-color');
+                if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
+                    var rgb = bg.match(/\d+/g);
+                    if (rgb && rgb.length >= 3) {
+                        var brightness = (parseInt(rgb[0]) * 299 + parseInt(rgb[1]) * 587 + parseInt(rgb[2]) * 114) / 1000;
+                        if (brightness < 128) return 'dark';
+                    }
+                }
+            } catch(e) {}
+
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return 'dark';
+            }
+
+            return 'light';
+        },
+
+        applyModalTheme: function($l) {
+            if (!$l || !$l.length) return;
+            var isDark = (this.detectTheme() === 'dark');
+            if (isDark) {
+                $l.addClass('sm-layer-dark');
+                $l.find('.sm-modal-body').addClass('sm-dark');
+            } else {
+                $l.removeClass('sm-layer-dark');
+                $l.find('.sm-modal-body').removeClass('sm-dark');
+            }
+        },
+
+        syncTheme: function() {
+            var isDark = (this.detectTheme() === 'dark');
+            var $c = $('#sm_container');
+            if (isDark) {
+                $c.addClass('sm-dark');
+                $c.parents('.layui-layer').addClass('sm-layer-dark');
+                $('.layui-layer:has(.sm-modal-body)').addClass('sm-layer-dark');
+                $('.sm-modal-body').addClass('sm-dark');
+            } else {
+                $c.removeClass('sm-dark');
+                $c.parents('.layui-layer').removeClass('sm-layer-dark');
+                $('.layui-layer:has(.sm-modal-body)').removeClass('sm-layer-dark');
+                $('.sm-modal-body').removeClass('sm-dark');
+            }
+        },
+
+        bindThemeObserver: function() {
+            var self = this;
+            self.syncTheme();
+            if (window.MutationObserver) {
+                var obs = new MutationObserver(function() {
+                    self.syncTheme();
+                });
+                if (document.documentElement) {
+                    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'class', 'style'] });
+                }
+                if (document.body) {
+                    obs.observe(document.body, { attributes: true, attributeFilter: ['data-theme', 'class', 'style'] });
+                }
+            }
+            if (window.matchMedia) {
+                var mql = window.matchMedia('(prefers-color-scheme: dark)');
+                var handler = function() { self.syncTheme(); };
+                if (mql.addEventListener) {
+                    mql.addEventListener('change', handler);
+                } else if (mql.addListener) {
+                    mql.addListener(handler);
+                }
+            }
+        },
 
         api: function(action_name, params, callback) {
             var loadIdx = layer.load(2, { time: 8000 });
@@ -445,7 +779,7 @@
                 var emptyMsg = this.currentTab === 'custom' ?
                     'No custom services found (click <b>+ Add New Service</b> to create one)' :
                     'No matching services found';
-                html = '<tr><td colspan="5" class="text-center" style="padding: 35px; color: #999;">' + emptyMsg + '</td></tr>';
+                html = '<tr><td colspan="5" class="text-center sm-empty-text">' + emptyMsg + '</td></tr>';
                 $('#sm_tbody').html(html);
                 return;
             }
@@ -458,11 +792,11 @@
                 // Status indicator
                 var statusHtml = '';
                 if (isRunning) {
-                    statusHtml = '<span class="sm-status-indicator" style="color: #20a53a;"><span class="sm-dot sm-dot-running"></span> Running</span>';
+                    statusHtml = '<span class="sm-status-indicator" style="color: var(--sm-primary);"><span class="sm-dot sm-dot-running"></span> Running</span>';
                 } else if (isFailed) {
                     statusHtml = '<span class="sm-status-indicator" style="color: #f56c6c;"><span class="sm-dot sm-dot-failed"></span> Failed (' + s.sub + ')</span>';
                 } else {
-                    statusHtml = '<span class="sm-status-indicator" style="color: #909399;"><span class="sm-dot sm-dot-stopped"></span> ' + (s.sub === 'dead' ? 'Stopped' : (s.sub || 'Stopped')) + '</span>';
+                    statusHtml = '<span class="sm-status-indicator" style="color: var(--sm-text-muted);"><span class="sm-dot sm-dot-stopped"></span> ' + (s.sub === 'dead' ? 'Stopped' : (s.sub || 'Stopped')) + '</span>';
                 }
 
                 // Boot tag
@@ -498,8 +832,8 @@
                 if (desc.length > 50) desc = desc.substr(0, 50) + '...';
 
                 html += '<tr>' +
-                    '<td>' + tagCustom + '<span style="font-weight: 500; color: #2c3e50;">' + s.name + '</span></td>' +
-                    '<td style="color: #777;" title="' + (s.desc || '') + '">' + desc + '</td>' +
+                    '<td>' + tagCustom + '<span class="sm-service-name">' + s.name + '</span></td>' +
+                    '<td class="sm-service-desc" title="' + (s.desc || '') + '">' + desc + '</td>' +
                     '<td>' + statusHtml + '</td>' +
                     '<td>' + bootHtml + '</td>' +
                     '<td>' + ops + '</td>' +
@@ -518,7 +852,7 @@
             var totalPages = Math.ceil(total / limit);
             var html = '';
             html += '<button class="btn btn-default btn-xs" ' + (page <= 1 ? 'disabled' : '') + ' onclick="smApp.goPage(' + (page - 1) + ')">&laquo; Prev</button>';
-            html += '<span style="font-size: 11px; color: #666; margin: 0 4px;">Page ' + page + ' of ' + totalPages + '</span>';
+            html += '<span class="sm-page-text">Page ' + page + ' of ' + totalPages + '</span>';
             html += '<button class="btn btn-default btn-xs" ' + (page >= totalPages ? 'disabled' : '') + ' onclick="smApp.goPage(' + (page + 1) + ')">Next &raquo;</button>';
             $('#sm_pagination').html(html);
         },
@@ -554,10 +888,13 @@
 
         confirmDelete: function(serviceName) {
             var self = this;
-            layer.confirm('Are you sure you want to delete service <b>' + serviceName + '</b> from the system?<br><small style="color: #999;">The unit file in /etc/systemd/system/ will be deleted and the service will be stopped.</small>', {
+            layer.confirm('Are you sure you want to delete service <b>' + serviceName + '</b> from the system?<br><small style="color: var(--sm-text-muted);">The unit file in /etc/systemd/system/ will be deleted and the service will be stopped.</small>', {
                 title: 'Confirm Deletion',
                 icon: 0,
-                btn: ['Delete', 'Cancel']
+                btn: ['Delete', 'Cancel'],
+                success: function($l) {
+                    self.applyModalTheme($l);
+                }
             }, function(index) {
                 layer.close(index);
                 self.api('delete_service', { name: serviceName }, function(res) {
@@ -580,10 +917,10 @@
                 }
                 var d = res.data;
                 var content = '<div class="sm-modal-body">' +
-                    '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; background:#f8f9fa; padding:8px 12px; border-radius:3px;">' +
+                    '<div class="sm-detail-header">' +
                         '<div>' +
-                            '<b style="font-size:13px; color:#2c3e50;">' + d.name + '</b>' +
-                            '<span style="margin-left:8px; color:#888; font-size:11px;">PID: <b>' + (d.main_pid || '-') + '</b> | RAM: <b>' + (d.memory || '-') + '</b></span>' +
+                            '<b class="sm-modal-title">' + d.name + '</b>' +
+                            '<span class="sm-modal-subtitle">PID: <b>' + (d.main_pid || '-') + '</b> | RAM: <b>' + (d.memory || '-') + '</b></span>' +
                         '</div>' +
                         '<div>' +
                             '<button class="btn btn-default btn-xs" onclick="smApp.refreshLogs(\'' + d.name + '\')"><span class="glyphicon glyphicon-repeat"></span> Refresh</button>' +
@@ -600,8 +937,9 @@
                     closeBtn: 1,
                     content: content,
                     success: function($l) {
+                        self.applyModalTheme($l);
                         var pre = $l.find('#sm_detail_pre');
-                        pre.scrollTop(pre[0].scrollHeight);
+                        if (pre.length) pre.scrollTop(pre[0].scrollHeight);
                     }
                 });
             });
@@ -629,12 +967,12 @@
                 var filePath = d.fragment_path || ('/etc/systemd/system/' + serviceName);
 
                 var content = '<div class="sm-modal-body">' +
-                    '<div style="margin-bottom:8px; color:#666; font-size:11px;">' +
-                        'File: <b style="color:#20a53a;">' + filePath + '</b>' +
+                    '<div class="sm-edit-filepath-label">' +
+                        'File: <b class="sm-accent-text">' + filePath + '</b>' +
                     '</div>' +
-                    '<textarea id="sm_edit_textarea" class="sm-terminal" style="width:100%; height:290px; color:#abb2bf; resize:none;">' + self.escapeHtml(d.unit_content || '') + '</textarea>' +
+                    '<textarea id="sm_edit_textarea" class="sm-terminal" style="width:100%; height:290px; resize:none;">' + self.escapeHtml(d.unit_content || '') + '</textarea>' +
                     '<div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">' +
-                        '<label style="font-weight:normal; cursor:pointer; font-size:12px; margin:0;">' +
+                        '<label style="font-weight:normal; cursor:pointer; font-size:12px; margin:0; color:var(--sm-text-primary);">' +
                             '<input type="checkbox" id="sm_edit_restart" checked style="vertical-align:middle;"> Restart service after saving' +
                         '</label>' +
                         '<div>' +
@@ -650,7 +988,10 @@
                     area: ['700px', '440px'],
                     shadeClose: false,
                     closeBtn: 1,
-                    content: content
+                    content: content,
+                    success: function($l) {
+                        self.applyModalTheme($l);
+                    }
                 });
             });
         },
@@ -683,19 +1024,19 @@
         openAddModal: function() {
             var self = this;
             var html = '<div class="sm-modal-body">' +
-                '<div style="display:flex; gap:12px; border-bottom:1px solid #eee; margin-bottom:12px; padding-bottom:6px;">' +
+                '<div class="sm-modal-tab-bar">' +
                     '<a href="javascript:;" id="tab_form_btn" class="sm-op-link" style="font-weight:600;" onclick="smApp.switchAddMode(1)">Quick Form</a>' +
-                    '<span style="color:#ddd;">|</span>' +
+                    '<span class="sm-op-sep">|</span>' +
                     '<a href="javascript:;" id="tab_raw_btn" class="sm-op-link muted" onclick="smApp.switchAddMode(2)">Raw Unit File</a>' +
                 '</div>' +
 
                 '<div id="add_mode_form">' +
                     '<div class="sm-line">' +
-                        '<div class="sm-line-label"><span style="color:red;">*</span> Service Name:</div>' +
+                        '<div class="sm-line-label"><span style="color:#f56c6c;">*</span> Service Name:</div>' +
                         '<div class="sm-line-content"><input type="text" id="a_name" class="sm-input" style="width:100%;" placeholder="e.g.: my-app (.service will be appended automatically)" /></div>' +
                     '</div>' +
                     '<div class="sm-line">' +
-                        '<div class="sm-line-label"><span style="color:red;">*</span> Exec Command:</div>' +
+                        '<div class="sm-line-label"><span style="color:#f56c6c;">*</span> Exec Command:</div>' +
                         '<div class="sm-line-content"><input type="text" id="a_exec" class="sm-input" style="width:100%;" placeholder="e.g.: /usr/bin/node /www/wwwroot/app/index.js" /></div>' +
                     '</div>' +
                     '<div class="sm-line">' +
@@ -719,7 +1060,7 @@
                             '<input type="text" id="a_env" class="sm-input" style="width:100%;" placeholder="PORT=3000 NODE_ENV=production (separated by spaces or lines)" />' +
                         '</div>' +
                     '</div>' +
-                    '<div style="margin-left:140px; margin-top:5px;">' +
+                    '<div style="margin-left:140px; margin-top:5px; color:var(--sm-text-primary);">' +
                         '<label style="margin-right:15px; font-weight:normal; cursor:pointer;"><input type="checkbox" id="a_enable" checked> Enable at Boot</label>' +
                         '<label style="font-weight:normal; cursor:pointer;"><input type="checkbox" id="a_start" checked> Start immediately after creation</label>' +
                     '</div>' +
@@ -727,19 +1068,19 @@
 
                 '<div id="add_mode_raw" style="display:none;">' +
                     '<div class="sm-line">' +
-                        '<div class="sm-line-label"><span style="color:red;">*</span> Service Name:</div>' +
+                        '<div class="sm-line-label"><span style="color:#f56c6c;">*</span> Service Name:</div>' +
                         '<div class="sm-line-content"><input type="text" id="ar_name" class="sm-input" style="width:100%;" placeholder="e.g.: my-app.service" /></div>' +
                     '</div>' +
-                    '<textarea id="ar_content" class="sm-terminal" style="width:100%; height:200px; color:#abb2bf; resize:none;">' +
+                    '<textarea id="ar_content" class="sm-terminal" style="width:100%; height:200px; resize:none;">' +
 '[Unit]\nDescription=My Application Service\nAfter=network.target\n\n[Service]\nType=simple\nUser=root\nWorkingDirectory=/www/wwwroot/myapp\nExecStart=/usr/bin/python3 main.py\nRestart=always\nRestartSec=5s\n\n[Install]\nWantedBy=multi-user.target\n' +
                     '</textarea>' +
-                    '<div style="margin-top:5px;">' +
+                    '<div style="margin-top:5px; color:var(--sm-text-primary);">' +
                         '<label style="margin-right:15px; font-weight:normal; cursor:pointer;"><input type="checkbox" id="ar_enable" checked> Enable at Boot</label>' +
                         '<label style="font-weight:normal; cursor:pointer;"><input type="checkbox" id="ar_start" checked> Start immediately</label>' +
                     '</div>' +
                 '</div>' +
 
-                '<div class="text-right" style="margin-top:15px; padding-top:10px; border-top:1px solid #eee;">' +
+                '<div class="sm-modal-footer">' +
                     '<button class="btn btn-default btn-sm" onclick="layer.closeAll()" style="margin-right:6px;">Cancel</button>' +
                     '<button class="btn btn-success btn-sm" onclick="smApp.submitAdd()">Create Service</button>' +
                 '</div>' +
@@ -751,7 +1092,10 @@
                 area: ['640px', '420px'],
                 shadeClose: false,
                 closeBtn: 1,
-                content: html
+                content: html,
+                success: function($l) {
+                    self.applyModalTheme($l);
+                }
             });
         },
 
@@ -819,6 +1163,7 @@
     };
 
     window.smApp = smApp;
+    smApp.bindThemeObserver();
     smApp.load();
 })();
 </script>
